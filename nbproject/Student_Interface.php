@@ -19,6 +19,7 @@
                 border-width: 1px 0;
             }
             td {
+                padding: 5px;
                 border:1px solid black;
                 text-align: center;
             }
@@ -58,7 +59,7 @@
                                 <td>abc</td> <!--implies columns-->
                                 <td>d</td> <!--implied columns-->
                                 <td><input type="text"></td> <!--student observations input-->
-                                <td><input type="checkbox"></td> <!--active checkbox-->
+                                <td><input type="radio" name="Active"></td> <!--active checkbox-->
                             </tr>
                 <?php
                         $x++;
