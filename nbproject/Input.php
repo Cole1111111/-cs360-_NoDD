@@ -8,6 +8,7 @@
         <form method = "post" target = "_slef">
         <div>
             <!--input for variables -->
+            <!-- look text feild or text text area not certain what kolol was talking about but thats what he wants -->
             <label for="varinput">Input Variables:</label>
             <input type="text" id="varinput" name="varinput" placeholder="ie: a,b,c,d"required/>
         </div>
