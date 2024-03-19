@@ -152,7 +152,7 @@
                 <button onclick="openInput(event, 'Row2')">Row 2</button>
                 <button onclick="openInput(event, 'Row3')">Row 3</button>
                 <button onclick="openInput(event, 'AddRow')">Add Row</button>
-                <button onclick="openInput(event, 'DeleteRow')">Delete Row</button>
+                <button onclick="openInput(event, 'DeleteRow')">Del Row</button>
             </div>
 
             <div id="FD" class="tabcontent">
@@ -211,7 +211,15 @@
             // Function to append a value to the current display
             function appendToDisplay(value) {
                 if (currentField == "FD") {
-                    currentFDDisplay += value;
+                    if (beforeArrow) {
+                        currentFDDisplay += value;
+                    }else {
+                        if (value == '\u{2192}') {
+                            return;
+                        } else {
+                            currentFDDisplay += value;
+                        }
+                    }
                     if (value == '\u{2192}') {
                         beforeArrow = false;
                     }
