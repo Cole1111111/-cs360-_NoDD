@@ -123,8 +123,9 @@
                 </tr>
                 <?php
                     while($x<=$num_relations) {
-                ?>
-                            <tr>
+                
+                            echo '<tr id=' . "Row$x" . '>';
+                    ?>
                                 <td><div class="display" id="fDDisplay"></div></td> <!--functional dependencies drop down-->
                                 <td><input type="radio" name="<?php echo $x; ?>"></td> <!--True check box-->
                                 <td><input type="radio" name="<?php echo $x; ?>"></td> <!--False check box-->
@@ -139,53 +140,61 @@
                     }
                 ?>
             </table>
-        </div>            
+        </div>
+        
+        <!-- Buttons for filling in the Obs field in selected row -->
         <div class="tab">
-                <button class="tablinks" onclick="openInput(event, 'Rows')">Row</button>
-                <button class="tablinks" onclick="openInput(event, 'FD')">FD</button>
-                <button class="tablinks" onclick="openInput(event, 'Tuples')">Tuples</button>
-                <button class="tablinks" onclick="openInput(event, 'Obs')">Obs</button>
-            </div>
+            <button class="tablinks" onclick="openInput(event, 'Rows')">Row</button>
+            <button class="tablinks" onclick="openInput(event, 'FD')">FD</button>
+            <button class="tablinks" onclick="openInput(event, 'Tuples')">Tuples</button>
+            <button class="tablinks" onclick="openInput(event, 'Obs')">Obs</button>
+        </div>
 
-            <div id="Rows" class="tabcontent">
-                <button onclick="openInput(event, 'Row1')">Row 1</button>
-                <button onclick="openInput(event, 'Row2')">Row 2</button>
-                <button onclick="openInput(event, 'Row3')">Row 3</button>
-                <button onclick="openInput(event, 'AddRow')">Add Row</button>
-                <button onclick="openInput(event, 'DeleteRow')">Del Row</button>
-            </div>
+        <!-- Buttons for selecting row -->
+        <div id="Rows" class="tabcontent">
+            <button onclick="setCurrentRow('Row1')">Row 1</button>
+            <button onclick="setCurrentRow('Row2')">Row 2</button>
+            <button onclick="setCurrentRow('Row3')">Row 3</button>
+            <button onclick="openInput(event, 'AddRow')">Add Row</button>
+            <button onclick="openInput(event, 'DeleteRow')">Del Row</button>
+        </div>
 
-            <div id="FD" class="tabcontent">
-                <button onclick="setDisplayVariable('FD'), appendToDisplay('A')">A</button>
-                <button onclick="setDisplayVariable('FD'), appendToDisplay('B')">B</button>
-                <button onclick="setDisplayVariable('FD'), appendToDisplay('C')">C</button>
-                <button onclick="setDisplayVariable('FD'), appendToDisplay('D')">D</button>
-                <button onclick="setDisplayVariable('FD'), appendToDisplay('E')">E</button>
-                <button onclick="setDisplayVariable('FD'), appendToDisplay('&#8594')">&#8594</button>
-                <button onclick="setDisplayVariable('FD'), clearLastElement()">Del</button>
-            </div>
+        <!-- Buttons for filling in the FD field in selected row -->
+        <div id="FD" class="tabcontent">
+            <button onclick="setDisplayVariable('FD'), appendToDisplay('A')">A</button>
+            <button onclick="setDisplayVariable('FD'), appendToDisplay('B')">B</button>
+            <button onclick="setDisplayVariable('FD'), appendToDisplay('C')">C</button>
+            <button onclick="setDisplayVariable('FD'), appendToDisplay('D')">D</button>
+            <button onclick="setDisplayVariable('FD'), appendToDisplay('E')">E</button>
+            <button onclick="setDisplayVariable('FD'), appendToDisplay('&#8594')">&#8594</button>
+            <button onclick="setDisplayVariable('FD'), clearLastElement()">Del</button>
+        </div>
 
-            <div id="Tuples" class="tabcontent">
-                <button onclick="setDisplayVariable('Tuples'), appendToDisplay('t_1')">t<sub>1</sub></button>
-                <button onclick="setDisplayVariable('Tuples'), appendToDisplay('t_2')">t<sub>2</sub></button>
-                <button onclick="setDisplayVariable('Tuples'), appendToDisplay('t_3')">t<sub>3</sub></button>
-                <button onclick="setDisplayVariable('Tuples'), clearLastElement()">Del</button>
-            </div>
+        <!-- Buttons for filling in the Tuples field in selected row -->
+        <div id="Tuples" class="tabcontent">
+            <button onclick="setDisplayVariable('Tuples'), appendToDisplay('t_1')">t<sub>1</sub></button>
+            <button onclick="setDisplayVariable('Tuples'), appendToDisplay('t_2')">t<sub>2</sub></button>
+            <button onclick="setDisplayVariable('Tuples'), appendToDisplay('t_3')">t<sub>3</sub></button>
+            <button onclick="setDisplayVariable('Tuples'), clearLastElement()">Del</button>
+        </div>
 
-            <div id="Obs" class="tabcontent">
-                <button onclick="setDisplayVariable('Obs'), appendToDisplay('A')">A</button>
-                <button onclick="setDisplayVariable('Obs'), appendToDisplay('B')">B</button>
-                <button onclick="setDisplayVariable('Obs'), appendToDisplay('C')">C</button>
-                <button onclick="setDisplayVariable('Obs'), appendToDisplay('D')">D</button>
-                <button onclick="setDisplayVariable('Obs'), appendToDisplay('E')">E</button>
-                <button onclick="setDisplayVariable('Obs'), appendToDisplay('=')">=</button>
-                <button onclick="setDisplayVariable('Obs'), appendToDisplay('&#8800')">&#8800</button>
-                <button onclick="setDisplayVariable('Obs'), appendToDisplay('&#94')">&#94;</button>
-                <button onclick="setDisplayVariable('Obs'), appendToDisplay('&#8964')">&#8964;</button>
-                <button onclick="setDisplayVariable('Obs'), clearLastElement()">Del</button>
-            </div>
+        <!-- Buttons for filling in the Obs field in selected row -->
+        <div id="Obs" class="tabcontent">
+            <button onclick="setDisplayVariable('Obs'), appendToDisplay('A')">A</button>
+            <button onclick="setDisplayVariable('Obs'), appendToDisplay('B')">B</button>
+            <button onclick="setDisplayVariable('Obs'), appendToDisplay('C')">C</button>
+            <button onclick="setDisplayVariable('Obs'), appendToDisplay('D')">D</button>
+            <button onclick="setDisplayVariable('Obs'), appendToDisplay('E')">E</button>
+            <button onclick="setDisplayVariable('Obs'), appendToDisplay('=')">=</button>
+            <button onclick="setDisplayVariable('Obs'), appendToDisplay('&#8800')">&#8800</button>
+            <button onclick="setDisplayVariable('Obs'), appendToDisplay('&#94')">&#94;</button>
+            <button onclick="setDisplayVariable('Obs'), appendToDisplay('&#8964')">&#8964;</button>
+            <button onclick="setDisplayVariable('Obs'), clearLastElement()">Del</button>
+        </div>
 
+        <!-- Script for button functionality -->
         <script>
+            // Function that makes the different tabs for the input buttons drop down
             function openInput( evt, inputName) {
                 var i, tabcontent, tablinks;
                 tabcontent = document.getElementsByClassName("tabcontent");
@@ -206,7 +215,13 @@
             let currentTuplesDisplay = ""; // The current Tuples display content
             let currentObsDisplay = ""; // The current Obs display content
             let currentField = "FD"; // The field the button interacts with
+            let currentRow = "Row1"; // The current row that is being input too
             let beforeArrow = true; // For the Columns setting whether before or after arrow in FD
+
+            // Function to set the row that will be input into
+            function setCurrentRow(row) {
+                currentRow = row;
+            }
 
             // Function to append a value to the current display
             function appendToDisplay(value) {
@@ -253,14 +268,18 @@
 
             // Function to set which field will be updated
             function setDisplayVariable(field) {
-                if (field === "FD") {
-                    currentField = "FD";
+                currentField = field;
+            }
+
+            // Function to select the row id for updating
+            function selectRow() {
+                if (currentRow === "Row1") {
+                    const rowToEdit = document.getElementById("Row1");
+                    displayElement.textContent = currentTuplesDisplay;
                 }
-                if (field === "Tuples") {
-                    currentField = "Tuples";
-                }
-                if (field === "Obs") {
-                    currentField = "Obs";
+                if (currentField === "Row2") {
+                    const rowToEdit = document.getElementById("Row2");
+                    displayElement.textContent = currentObsDisplay;
                 }
             }
 
@@ -307,6 +326,7 @@
                 updateDisplay();
             }
         </script>
+
         <div style="padding: 10px">
             <table>
                 <tr>
