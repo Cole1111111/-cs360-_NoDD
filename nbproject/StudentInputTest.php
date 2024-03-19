@@ -82,15 +82,17 @@
 
         <h2>Input</h2>
         <p>Click on the buttons inside the tabbed menu to input into associated columns</p>
-        <div class="calculator">
-            <div class="display" id="display"></div>
+        <!--<div class="calculator">-->
+            <div class="display" id="fDDisplay"></div><br>
+            <div class="display" id="tuplesDisplay"></div><br>
+            <div class="display" id="cols1Display"></div><br>
+            <div class="display" id="cols2Display"></div><br>
+            <div class="display" id="obsDisplay"></div>
 
             <div class="tab">
                 <button class="tablinks" onclick="openInput(event, 'Rows')">Row</button>
                 <button class="tablinks" onclick="openInput(event, 'FD')">FD</button>
                 <button class="tablinks" onclick="openInput(event, 'Tuples')">Tuples</button>
-                <button class="tablinks" onclick="openInput(event, 'Cols1')">Cols</button>
-                <button class="tablinks" onclick="openInput(event, 'Cols2')">Cols</button>
                 <button class="tablinks" onclick="openInput(event, 'Obs')">Obs</button>
             </div>
 
@@ -103,53 +105,35 @@
             </div>
 
             <div id="FD" class="tabcontent">
-                <button onclick="appendToDisplay('A')">A</button>
-                <button onclick="appendToDisplay('B')">B</button>
-                <button onclick="appendToDisplay('C')">C</button>
-                <button onclick="appendToDisplay('D')">D</button>
-                <button onclick="appendToDisplay('E')">E</button>
-                <button onclick="appendToDisplay('&#8594')">&#8594</button>
-                <button onclick="clearLastElement()">Delete</button>
+                <button onclick="setDisplayVariable('FD'), appendToDisplay('A')">A</button>
+                <button onclick="setDisplayVariable('FD'), appendToDisplay('B')">B</button>
+                <button onclick="setDisplayVariable('FD'), appendToDisplay('C')">C</button>
+                <button onclick="setDisplayVariable('FD'), appendToDisplay('D')">D</button>
+                <button onclick="setDisplayVariable('FD'), appendToDisplay('E')">E</button>
+                <button onclick="setDisplayVariable('FD'), appendToDisplay('&#8594')">&#8594</button>
+                <button onclick="setDisplayVariable('FD'), clearLastElement()">Del</button>
             </div>
 
             <div id="Tuples" class="tabcontent">
-                <button onclick="appendToDisplay('t1')">t<sub>1</sub></button>
-                <button onclick="appendToDisplay('t2')">t<sub>2</sub></button>
-                <button onclick="appendToDisplay('t3')">t<sub>3</sub></button>
-                <button onclick="clearLastElement()">Delete</button>
-            </div>
-
-            <div id="Cols1" class="tabcontent">
-                <button onclick="appendToDisplay('A')">A</button>
-                <button onclick="appendToDisplay('B')">B</button>
-                <button onclick="appendToDisplay('C')">C</button>
-                <button onclick="appendToDisplay('D')">D</button>
-                <button onclick="appendToDisplay('E')">E</button>
-                <button onclick="clearLastElement()">Delete</button>
-            </div>
-
-            <div id="Cols2" class="tabcontent">
-                <button onclick="appendToDisplay('A')">A</button>
-                <button onclick="appendToDisplay('B')">B</button>
-                <button onclick="appendToDisplay('C')">C</button>
-                <button onclick="appendToDisplay('D')">D</button>
-                <button onclick="appendToDisplay('E')">E</button>
-                <button onclick="clearLastElement()">Delete</button>
+                <button onclick="setDisplayVariable('Tuples'), appendToDisplay('t_1')">t<sub>1</sub></button>
+                <button onclick="setDisplayVariable('Tuples'), appendToDisplay('t_2')">t<sub>2</sub></button>
+                <button onclick="setDisplayVariable('Tuples'), appendToDisplay('t_3')">t<sub>3</sub></button>
+                <button onclick="setDisplayVariable('Tuples'), clearLastElement()">Del</button>
             </div>
 
             <div id="Obs" class="tabcontent">
-                <button onclick="appendToDisplay('A')">A</button>
-                <button onclick="appendToDisplay('B')">B</button>
-                <button onclick="appendToDisplay('C')">C</button>
-                <button onclick="appendToDisplay('D')">D</button>
-                <button onclick="appendToDisplay('E')">E</button>
-                <button onclick="appendToDisplay('=')">=</button>
-                <button onclick="appendToDisplay('&#8800')">&#8800</button>
-                <button onclick="appendToDisplay('&#94')">&#94;</button>
-                <button onclick="appendToDisplay('&#8964')">&#8964;</button>
-                <button onclick="clearLastElement()">Delete</button>
+                <button onclick="setDisplayVariable('Obs'), appendToDisplay('A')">A</button>
+                <button onclick="setDisplayVariable('Obs'), appendToDisplay('B')">B</button>
+                <button onclick="setDisplayVariable('Obs'), appendToDisplay('C')">C</button>
+                <button onclick="setDisplayVariable('Obs'), appendToDisplay('D')">D</button>
+                <button onclick="setDisplayVariable('Obs'), appendToDisplay('E')">E</button>
+                <button onclick="setDisplayVariable('Obs'), appendToDisplay('=')">=</button>
+                <button onclick="setDisplayVariable('Obs'), appendToDisplay('&#8800')">&#8800</button>
+                <button onclick="setDisplayVariable('Obs'), appendToDisplay('&#94')">&#94;</button>
+                <button onclick="setDisplayVariable('Obs'), appendToDisplay('&#8964')">&#8964;</button>
+                <button onclick="setDisplayVariable('Obs'), clearLastElement()">Del</button>
             </div>
-        </div>
+        <!--</div>-->
 
         <script>
             function openInput( evt, inputName) {
@@ -166,24 +150,101 @@
                 evt.currentTarget.className += "active";
             }
             // Initialize variables to store the current display and result display state
-            let currentDisplay = ""; // The current display content
+            let currentFDDisplay = ""; // The current FD display content
+            let currentCols1Display = ""; // The current Cols1 display content
+            let currentCols2Display = ""; // The current Cols2 display content
+            let currentTuplesDisplay = ""; // The current Tuples display content
+            let currentObsDisplay = ""; // The current Obs display content
+            let currentField = "FD"; // The field the button interacts with
+            let beforeArrow = true; // For the Columns setting whether before or after arrow in FD
 
             // Function to append a value to the current display
             function appendToDisplay(value) {
-                currentDisplay += value;
+                if (currentField == "FD") {
+                    currentFDDisplay += value;
+                    if (value == '\u{2192}') {
+                        beforeArrow = false;
+                    }
+                    if (beforeArrow == true && value != '\u{2192}') {
+                        if (currentCols1Display === "") {
+                            currentCols1Display += value;
+                        } else {
+                            currentCols1Display += ', ' + value;
+                        }
+                    } else if (beforeArrow == false && value != '\u{2192}') {
+                        if (currentCols2Display === "") {
+                            currentCols2Display += value;
+                        } else {
+                            currentCols2Display += ', ' + value;
+                        }
+                    }
+                }
+                if (currentField === "Tuples") {
+                    if (currentTuplesDisplay === "") {
+                        currentTuplesDisplay += value;
+                    } else {
+                        currentTuplesDisplay += ', ' + value;
+                    }
+                }
+                if (currentField === "Obs") {
+                    currentObsDisplay += value;
+                }
 
                 updateDisplay();
             }
 
+            // Function to set which field will be updated
+            function setDisplayVariable(field) {
+                if (field === "FD") {
+                    currentField = "FD";
+                }
+                if (field === "Tuples") {
+                    currentField = "Tuples";
+                }
+                if (field === "Obs") {
+                    currentField = "Obs";
+                }
+            }
+
             // Function to update the display with the current content
             function updateDisplay() {
-                const displayElement = document.getElementById("display");
-                displayElement.textContent = currentDisplay;
+                if (currentField === "FD") {
+                    const displayFDElement = document.getElementById("fDDisplay");
+                    displayFDElement.textContent = currentFDDisplay;
+                    const displayCols1Element = document.getElementById("cols1Display");
+                    displayCols1Element.textContent = currentCols1Display;
+                    const displayCols2Element = document.getElementById("cols2Display");
+                    displayCols2Element.textContent = currentCols2Display;
+                }
+                if (currentField === "Tuples") {
+                    const displayElement = document.getElementById("tuplesDisplay");
+                    displayElement.textContent = currentTuplesDisplay;
+                }
+                if (currentField === "Obs") {
+                    const displayElement = document.getElementById("obsDisplay");
+                    displayElement.textContent = currentObsDisplay;
+                }
             }
 
             // Function to clear the last element from the current display
             function clearLastElement() {
-                currentDisplay = currentDisplay.slice(0, -1);
+                if (currentField === "FD") {
+                    if (currentFDDisplay.slice(-1) === '\u{2192}') {
+                        beforeArrow = true;
+                    }
+                    if (beforeArrow && currentFDDisplay.slice(-1) != '\u{2192}') {
+                        currentCols1Display = currentCols1Display.slice(0, -3);
+                    } else if (!beforeArrow && currentFDDisplay.slice(-1) != '\u{2192}') {
+                        currentCols2Display = currentCols2Display.slice(0, -3);
+                    }
+                    currentFDDisplay = currentFDDisplay.slice(0, -1);
+                }
+                if (currentField === "Tuples") {
+                    currentTuplesDisplay = currentTuplesDisplay.slice(0, -5);
+                }
+                if (currentField === "Obs") {
+                    currentObsDisplay = currentObsDisplay.slice(0, -1);
+                }
 
                 updateDisplay();
             }
