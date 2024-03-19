@@ -161,7 +161,15 @@
             // Function to append a value to the current display
             function appendToDisplay(value) {
                 if (currentField == "FD") {
-                    currentFDDisplay += value;
+                    if (beforeArrow) {
+                        currentFDDisplay += value;
+                    }else {
+                        if (value == '\u{2192}') {
+                            return;
+                        } else {
+                            currentFDDisplay += value;
+                        }
+                    }
                     if (value == '\u{2192}') {
                         beforeArrow = false;
                     }
