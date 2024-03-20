@@ -125,17 +125,17 @@
                     while($x<=$num_relations) {
                 
                             echo '<tr id=' . "Row$x" . '>';
-                    ?>
-                                <td><div class="display" id="fDDisplay"></div></td> <!--functional dependencies drop down-->
-                                <td><input type="radio" name="<?php echo $x; ?>"></td> <!--True check box-->
-                                <td><input type="radio" name="<?php echo $x; ?>"></td> <!--False check box-->
-                                <td><div class="display" id="tuplesDisplay"></div></td> <!--tuples drop down-->
-                                <td><div class="display" id="cols1Display"></div></td> <!--implies columns-->
-                                <td><div class="display" id="cols2Display"></div></td> <!--implied columns-->
-                                <td><div class="display" id="obsDisplay"></div></td> <!--student observations input-->
-                                <td><input type="radio" name="Active"></td> <!--active checkbox-->
-                            </tr>
-                <?php
+                    
+                                echo '<td><div class="display" id=' . "fDDisplay$x" . '></div></td>'; //<!--functional dependencies drop down-->
+                                echo '<td><input type="radio" name=' . "$x" . '></td>'; //<!--True check box-->
+                                echo '<td><input type="radio" name=' . "$x" . '></td>'; //<!--False check box-->
+                                echo '<td><div class="display" id=' . "tuplesDisplay$x" . '></div></td>'; //<!--tuples drop down-->
+                                echo '<td><div class="display" id=' . "cols1Display$x" . '></div></td>'; //<!--implies columns-->
+                                echo '<td><div class="display" id=' . "cols2Display$x" . '></div></td>'; //<!--implied columns-->
+                                echo '<td><div class="display" id=' . "obsDisplay$x" . '></div></td>'; //<!--student observations input-->
+                                echo '<td><input type="radio" name="Active"></td>'; //<!--active checkbox-->
+                            echo '</tr>';
+                
                         $x++;
                     }
                 ?>
@@ -152,9 +152,9 @@
 
         <!-- Buttons for selecting row -->
         <div id="Rows" class="tabcontent">
-            <button onclick="setCurrentRow('Row1')">Row 1</button>
-            <button onclick="setCurrentRow('Row2')">Row 2</button>
-            <button onclick="setCurrentRow('Row3')">Row 3</button>
+            <button onclick="setCurrentRow('1')">Row 1</button>
+            <button onclick="setCurrentRow('2')">Row 2</button>
+            <button onclick="setCurrentRow('3')">Row 3</button>
             <button onclick="openInput(event, 'AddRow')">Add Row</button>
             <button onclick="openInput(event, 'DeleteRow')">Del Row</button>
         </div>
@@ -209,13 +209,13 @@
                 evt.currentTarget.className += "active";
             }
             // Initialize variables to store the current display and result display state
-            let currentFDDisplay = ""; // The current FD display content
+            let currentFDDisplay = "";//document.getElementById("fDDisplay" + currentRow); // The current FD display content
             let currentCols1Display = ""; // The current Cols1 display content
             let currentCols2Display = ""; // The current Cols2 display content
             let currentTuplesDisplay = ""; // The current Tuples display content
-            let currentObsDisplay = ""; // The current Obs display content
+            let currentObsDisplay = ""; // The current Obs display content*/
             let currentField = "FD"; // The field the button interacts with
-            let currentRow = "Row1"; // The current row that is being input too
+            let currentRow = 1; // The current row that is being input too
             let beforeArrow = true; // For the Columns setting whether before or after arrow in FD
 
             // Function to set the row that will be input into
@@ -225,6 +225,16 @@
 
             // Function to append a value to the current display
             function appendToDisplay(value) {
+                /*var currentFDDisplay = "";//document.getElementById("fDDisplay" + currentRow); // The current FD display content
+                var currentCols1Display = ""; // The current Cols1 display content
+                var currentCols2Display = ""; // The current Cols2 display content
+                var currentTuplesDisplay = ""; // The current Tuples display content
+                var currentObsDisplay = ""; // The current Obs display content*/
+
+                //var currentFDDisplay_data = currentFDDisplay.innerHTML;
+
+                //currentFDDisplay.innerHTML = ""
+
                 if (currentField == "FD") {
                     if (beforeArrow) {
                         currentFDDisplay += value;
@@ -271,34 +281,22 @@
                 currentField = field;
             }
 
-            // Function to select the row id for updating
-            function selectRow() {
-                if (currentRow === "Row1") {
-                    const rowToEdit = document.getElementById("Row1");
-                    displayElement.textContent = currentTuplesDisplay;
-                }
-                if (currentField === "Row2") {
-                    const rowToEdit = document.getElementById("Row2");
-                    displayElement.textContent = currentObsDisplay;
-                }
-            }
-
             // Function to update the display with the current content
             function updateDisplay() {
                 if (currentField === "FD") {
-                    const displayFDElement = document.getElementById("fDDisplay");
+                    const displayFDElement = document.getElementById("fDDisplay" + currentRow);
                     displayFDElement.textContent = currentFDDisplay;
-                    const displayCols1Element = document.getElementById("cols1Display");
+                    const displayCols1Element = document.getElementById("cols1Display" + currentRow);
                     displayCols1Element.textContent = currentCols1Display;
-                    const displayCols2Element = document.getElementById("cols2Display");
+                    const displayCols2Element = document.getElementById("cols2Display" + currentRow);
                     displayCols2Element.textContent = currentCols2Display;
                 }
                 if (currentField === "Tuples") {
-                    const displayElement = document.getElementById("tuplesDisplay");
+                    const displayElement = document.getElementById("tuplesDisplay" + currentRow);
                     displayElement.textContent = currentTuplesDisplay;
                 }
                 if (currentField === "Obs") {
-                    const displayElement = document.getElementById("obsDisplay");
+                    const displayElement = document.getElementById("obsDisplay" + currentRow);
                     displayElement.textContent = currentObsDisplay;
                 }
             }
