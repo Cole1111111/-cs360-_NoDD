@@ -194,6 +194,13 @@
 
         <!-- Script for button functionality -->
         <script>
+            let new_row = false;
+            let cols1switch = false;
+            let cols2switch = false;
+            let row_1_clicked = 0;
+            let row_2_clicked = 0;
+            let row_3_clicked = 0;
+            
             // Function that makes the different tabs for the input buttons drop down
             function openInput( evt, inputName) {
                 var i, tabcontent, tablinks;
@@ -215,11 +222,42 @@
             let currentTuplesDisplay = ""; // The current Tuples display content
             let currentObsDisplay = ""; // The current Obs display content*/
             let currentField = "FD"; // The field the button interacts with
-            let currentRow = 1; // The current row that is being input too
+            let currentRow = 0; // The current row that is being input too
             let beforeArrow = true; // For the Columns setting whether before or after arrow in FD
 
             // Function to set the row that will be input into
             function setCurrentRow(row) {
+                if(row == '1'){
+                    new_row = true;
+                    beforeArrow = true;
+                    //alert ("row 1 clcked");
+                    row_1_clicked = 1;
+                    row_2_clicked = 0;
+                    row_3_clicked = 0;
+                }else{
+                    row_1_clicked = 0;
+                }
+                if(row == '2'){
+                    //alert ("row 2 clcked");
+                    new_row = true;
+                    beforeArrow = true;
+                    row_1_clicked = 0;
+                    row_2_clicked = 1;
+                    row_3_clicked = 0;
+                }else{
+
+                    row_2_clicked = 0;
+                }
+                if(row == '3'){
+                    new_row = true;
+                    beforeArrow = true;
+                    //alert ("row 3 clcked");
+                    row_1_clicked = 0;
+                    row_2_clicked = 0;
+                    row_3_clicked = 1;
+                }else{
+                    row_3_clicked = 0;
+                }
                 currentRow = row;
             }
 
@@ -235,30 +273,56 @@
 
                 //currentFDDisplay.innerHTML = ""
 
+                //INCLUDE LOGINC TO AVOID THE APPEND ON NEW ROW SELECTION
+
+
+
+
+
+
+
+                //
+                //if you leave a row and come back it deletes the row
                 if (currentField == "FD") {
-                    if (beforeArrow) {
+                    if (beforeArrow && new_row == false) {
                         currentFDDisplay += value;
-                    }else {
+                    } else if (new_row == true){
+                        new_row = false;
+                        cols1switch = true;
+                        cols2switch = true;
+                        //alert("new row false");
+                        currentFDDisplay = value;
+                    } else {
                         if (value == '\u{2192}') {
                             return;
-                        } else {
+                        } else if (beforeArrow == false && new_row ==false) {
                             currentFDDisplay += value;
                         }
                     }
                     if (value == '\u{2192}') {
                         beforeArrow = false;
                     }
+                    //first cols
                     if (beforeArrow == true && value != '\u{2192}') {
-                        if (currentCols1Display === "") {
+                        if (currentCols1Display === "" && cols1switch == false) {
+                            
                             currentCols1Display += value;
-                        } else {
+                        } else if (currentCols1Display != "" && cols1switch == false) {
                             currentCols1Display += ', ' + value;
+                        } else if (cols1switch == true){
+                            cols1switch = false;
+                            currentCols1Display = value;
                         }
+                      
+                    //second cols
                     } else if (beforeArrow == false && value != '\u{2192}') {
-                        if (currentCols2Display === "") {
+                        if (currentCols2Display === "" && cols2switch == false) {
                             currentCols2Display += value;
-                        } else {
+                        } else if (currentCols2Display != "" && cols2switch == false) {
                             currentCols2Display += ', ' + value;
+                        } else if (cols2switch == true){
+                            cols2switch = false;
+                            currentCols2Display = value;
                         }
                     }
                 }
@@ -290,6 +354,7 @@
                     displayCols1Element.textContent = currentCols1Display;
                     const displayCols2Element = document.getElementById("cols2Display" + currentRow);
                     displayCols2Element.textContent = currentCols2Display;
+                    
                 }
                 if (currentField === "Tuples") {
                     const displayElement = document.getElementById("tuplesDisplay" + currentRow);
