@@ -230,6 +230,12 @@
                 if(row == '1'){
                     new_row = true;
                     beforeArrow = true;
+                    //const displayFDElement = document.getElementById("fDDisplay" + currentRow);
+                    //currentFDDisplay = displayFDElement.textContent;
+                    currentCols2Display = "";
+                    currentTuplesDisplay = "";
+                    currentObsDisplay = "";
+                    //cols2switch = true;
                     //alert ("row 1 clcked");
                     row_1_clicked = 1;
                     row_2_clicked = 0;
@@ -241,6 +247,12 @@
                     //alert ("row 2 clcked");
                     new_row = true;
                     beforeArrow = true;
+                    //const displayFDElement = document.getElementById("fDDisplay" + currentRow);
+                    //currentFDDisplay = displayFDElement.textContent;
+                    currentCols2Display = "";
+                    currentTuplesDisplay = "";
+                    currentObsDisplay = "";
+                    //cols2switch = true;
                     row_1_clicked = 0;
                     row_2_clicked = 1;
                     row_3_clicked = 0;
@@ -251,6 +263,11 @@
                 if(row == '3'){
                     new_row = true;
                     beforeArrow = true;
+                    //const displayFDElement = document.getElementById("fDDisplay" + currentRow);
+                    //currentFDDisplay = displayFDElement.textContent;
+                    currentCols2Display = "";
+                    currentTuplesDisplay = "";
+                    currentObsDisplay = "";
                     //alert ("row 3 clcked");
                     row_1_clicked = 0;
                     row_2_clicked = 0;
@@ -283,6 +300,9 @@
 
                 //
                 //if you leave a row and come back it deletes the row
+
+                //the fallowing is the logic for updating the student interface//
+                //Functional Dependancies 
                 if (currentField == "FD") {
                     if (beforeArrow && new_row == false) {
                         currentFDDisplay += value;
@@ -290,18 +310,18 @@
                         new_row = false;
                         cols1switch = true;
                         cols2switch = true;
-                        //alert("new row false");
                         currentFDDisplay = value;
                     } else {
                         if (value == '\u{2192}') {
                             return;
-                        } else if (beforeArrow == false && new_row ==false) {
+                        } else if (beforeArrow == false && new_row == false) {
                             currentFDDisplay += value;
                         }
                     }
                     if (value == '\u{2192}') {
                         beforeArrow = false;
                     }
+
                     //first cols
                     if (beforeArrow == true && value != '\u{2192}') {
                         if (currentCols1Display === "" && cols1switch == false) {
@@ -314,7 +334,7 @@
                             currentCols1Display = value;
                         }
                       
-                    //second cols
+                    //second cols 
                     } else if (beforeArrow == false && value != '\u{2192}') {
                         if (currentCols2Display === "" && cols2switch == false) {
                             currentCols2Display += value;
@@ -326,6 +346,8 @@
                         }
                     }
                 }
+
+                //Tuples
                 if (currentField === "Tuples") {
                     if (currentTuplesDisplay === "") {
                         currentTuplesDisplay += value;
@@ -333,6 +355,8 @@
                         currentTuplesDisplay += ', ' + value;
                     }
                 }
+
+                //Observations
                 if (currentField === "Obs") {
                     currentObsDisplay += value;
                 }
