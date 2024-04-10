@@ -152,11 +152,11 @@
 
         <!-- Buttons for selecting row -->
         <div id="Rows" class="tabcontent">
-            <button onclick="setCurrentRow('1')">Row 1</button>
-            <button onclick="setCurrentRow('2')">Row 2</button>
-            <button onclick="setCurrentRow('3')">Row 3</button>
-            <button onclick="add_row()">Add Row</button>
-            <button onclick="openInput(event, 'DeleteRow')">Del Row</button>
+            <button id="rowButton1" onclick="setCurrentRow('1')">Row 1</button>
+            <button id="rowButton2" onclick="setCurrentRow('2')">Row 2</button>
+            <button id="rowButton3" onclick="setCurrentRow('3')">Row 3</button>
+            <button id="addRowButton" onclick="add_row()">Add Row</button>
+            <button id="delRowButton" onclick="delete_row()">Del Row</button>
         </div>
 
         <!-- Buttons for filling in the FD field in selected row -->
@@ -400,6 +400,43 @@
                 row.appendChild(c8);
 
                 table.appendChild(row);
+
+
+                let rowButtons = document.getElementById("Rows");
+
+                const addRowButton = document.getElementById("addRowButton");
+                const delRowButton = document.getElementById("delRowButton");
+                addRowButton.remove();
+                delRowButton.remove();
+
+                let rowButton = document.createElement("button");
+                rowButton.setAttribute('id', 'rowButton' + x);
+                rowButton.setAttribute('onclick', 'setCurrentRow(\'' + 1 + '\')');
+                rowButton.innerText = "Row " + x;
+                rowButtons.appendChild(rowButton);
+
+                let addRow = document.createElement("button");
+                addRow.setAttribute('id', 'addRowButton');
+                addRow.setAttribute('onclick', 'add_row()');
+                addRow.innerText = "Add Row";
+                rowButtons.appendChild(addRow);
+
+                let delRow = document.createElement("button");
+                delRow.setAttribute('id', 'delRowButton');
+                delRow.setAttribute('onclick', 'delete_row()');
+                delRow.innerText = "Del Row";
+                rowButtons.appendChild(delRow);
+            }
+
+            function delete_row()
+            {
+                let table = document.getElementById("studentInput");
+                table.deleteRow(-1);
+
+                let lastRowButton = document.getElementById("rowButton" + x);
+                lastRowButton.remove();
+
+                x--;
             }
         </script>
 
