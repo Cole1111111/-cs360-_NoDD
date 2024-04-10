@@ -110,7 +110,7 @@
             $x = 1;
         ?>
         <div style="padding:10px">
-            <table>
+            <table id="studentInput">
                 <tr>
                     <th>FD</th>
                     <th>True</th>
@@ -155,7 +155,7 @@
             <button onclick="setCurrentRow('1')">Row 1</button>
             <button onclick="setCurrentRow('2')">Row 2</button>
             <button onclick="setCurrentRow('3')">Row 3</button>
-            <button onclick="openInput(event, 'AddRow')">Add Row</button>
+            <button onclick="add_row()">Add Row</button>
             <button onclick="openInput(event, 'DeleteRow')">Del Row</button>
         </div>
 
@@ -194,13 +194,6 @@
 
         <!-- Script for button functionality -->
         <script>
-            let new_row = false;
-            let cols1switch = false;
-            let cols2switch = false;
-            let row_1_clicked = 0;
-            let row_2_clicked = 0;
-            let row_3_clicked = 0;
-            
             // Function that makes the different tabs for the input buttons drop down
             function openInput( evt, inputName) {
                 var i, tabcontent, tablinks;
@@ -222,59 +215,12 @@
             let currentTuplesDisplay = ""; // The current Tuples display content
             let currentObsDisplay = ""; // The current Obs display content*/
             let currentField = "FD"; // The field the button interacts with
-            let currentRow = 0; // The current row that is being input too
+            let currentRow = 1; // The current row that is being input too
             let beforeArrow = true; // For the Columns setting whether before or after arrow in FD
+            var x = <?php echo $x; ?> - 1;
 
             // Function to set the row that will be input into
             function setCurrentRow(row) {
-                if(row == '1'){
-                    new_row = true;
-                    beforeArrow = true;
-                    //const displayFDElement = document.getElementById("fDDisplay" + currentRow);
-                    //currentFDDisplay = displayFDElement.textContent;
-                    currentCols2Display = "";
-                    currentTuplesDisplay = "";
-                    currentObsDisplay = "";
-                    //cols2switch = true;
-                    //alert ("row 1 clcked");
-                    row_1_clicked = 1;
-                    row_2_clicked = 0;
-                    row_3_clicked = 0;
-                }else{
-                    row_1_clicked = 0;
-                }
-                if(row == '2'){
-                    //alert ("row 2 clcked");
-                    new_row = true;
-                    beforeArrow = true;
-                    //const displayFDElement = document.getElementById("fDDisplay" + currentRow);
-                    //currentFDDisplay = displayFDElement.textContent;
-                    currentCols2Display = "";
-                    currentTuplesDisplay = "";
-                    currentObsDisplay = "";
-                    //cols2switch = true;
-                    row_1_clicked = 0;
-                    row_2_clicked = 1;
-                    row_3_clicked = 0;
-                }else{
-
-                    row_2_clicked = 0;
-                }
-                if(row == '3'){
-                    new_row = true;
-                    beforeArrow = true;
-                    //const displayFDElement = document.getElementById("fDDisplay" + currentRow);
-                    //currentFDDisplay = displayFDElement.textContent;
-                    currentCols2Display = "";
-                    currentTuplesDisplay = "";
-                    currentObsDisplay = "";
-                    //alert ("row 3 clcked");
-                    row_1_clicked = 0;
-                    row_2_clicked = 0;
-                    row_3_clicked = 1;
-                }else{
-                    row_3_clicked = 0;
-                }
                 currentRow = row;
             }
 
@@ -290,64 +236,33 @@
 
                 //currentFDDisplay.innerHTML = ""
 
-                //INCLUDE LOGINC TO AVOID THE APPEND ON NEW ROW SELECTION
-
-
-
-
-
-
-
-                //
-                //if you leave a row and come back it deletes the row
-
-                //the fallowing is the logic for updating the student interface//
-                //Functional Dependancies 
                 if (currentField == "FD") {
-                    if (beforeArrow && new_row == false) {
+                    if (beforeArrow) {
                         currentFDDisplay += value;
-                    } else if (new_row == true){
-                        new_row = false;
-                        cols1switch = true;
-                        cols2switch = true;
-                        currentFDDisplay = value;
-                    } else {
+                    }else {
                         if (value == '\u{2192}') {
                             return;
-                        } else if (beforeArrow == false && new_row == false) {
+                        } else {
                             currentFDDisplay += value;
                         }
                     }
                     if (value == '\u{2192}') {
                         beforeArrow = false;
                     }
-
-                    //first cols
                     if (beforeArrow == true && value != '\u{2192}') {
-                        if (currentCols1Display === "" && cols1switch == false) {
-                            
+                        if (currentCols1Display === "") {
                             currentCols1Display += value;
-                        } else if (currentCols1Display != "" && cols1switch == false) {
+                        } else {
                             currentCols1Display += ', ' + value;
-                        } else if (cols1switch == true){
-                            cols1switch = false;
-                            currentCols1Display = value;
                         }
-                      
-                    //second cols 
                     } else if (beforeArrow == false && value != '\u{2192}') {
-                        if (currentCols2Display === "" && cols2switch == false) {
+                        if (currentCols2Display === "") {
                             currentCols2Display += value;
-                        } else if (currentCols2Display != "" && cols2switch == false) {
+                        } else {
                             currentCols2Display += ', ' + value;
-                        } else if (cols2switch == true){
-                            cols2switch = false;
-                            currentCols2Display = value;
                         }
                     }
                 }
-
-                //Tuples
                 if (currentField === "Tuples") {
                     if (currentTuplesDisplay === "") {
                         currentTuplesDisplay += value;
@@ -355,8 +270,6 @@
                         currentTuplesDisplay += ', ' + value;
                     }
                 }
-
-                //Observations
                 if (currentField === "Obs") {
                     currentObsDisplay += value;
                 }
@@ -378,7 +291,6 @@
                     displayCols1Element.textContent = currentCols1Display;
                     const displayCols2Element = document.getElementById("cols2Display" + currentRow);
                     displayCols2Element.textContent = currentCols2Display;
-                    
                 }
                 if (currentField === "Tuples") {
                     const displayElement = document.getElementById("tuplesDisplay" + currentRow);
@@ -411,6 +323,83 @@
                 }
 
                 updateDisplay();
+            }
+
+            function add_row()
+            {
+                x++;
+
+                let table = document.getElementById("studentInput");
+
+                let row = document.createElement("tr");
+                row.setAttribute('id', 'Row' + x);
+
+                let c1 = document.createElement("td");
+                let d1 = document.createElement("div");
+
+                d1.setAttribute('class', 'display');
+                d1.setAttribute('id', 'fDDisplay' + x);
+                c1.appendChild(d1);
+
+                let c2 = document.createElement("td");
+                let d2 = document.createElement("input");
+
+                d2.setAttribute('type', 'radio');
+                d2.setAttribute('name', x);
+                c2.appendChild(d2);
+
+                let c3 = document.createElement("td");
+                let d3 = document.createElement("input");
+
+                d3.setAttribute('type', 'radio');
+                d3.setAttribute('name', x);
+                c3.appendChild(d3);
+
+                let c4 = document.createElement("td");
+                let d4 = document.createElement("div");
+
+                d4.setAttribute('class', 'display');
+                d4.setAttribute('id', 'tuplesDisplay' + x);
+                c4.appendChild(d4);
+
+                let c5 = document.createElement("td");
+                let d5 = document.createElement("div");
+
+                d5.setAttribute('class', 'display');
+                d5.setAttribute('id', 'cols1Display' + x);
+                c5.appendChild(d5);
+
+                let c6 = document.createElement("td");
+                let d6 = document.createElement("div");
+
+                d6.setAttribute('class', 'display');
+                d6.setAttribute('id', 'cols2Display' + x);
+                c6.appendChild(d6);
+
+                let c7 = document.createElement("td");
+                let d7 = document.createElement("div");
+
+                d7.setAttribute('class', 'display');
+                d7.setAttribute('id', 'obsDisplay' + x);
+                c7.appendChild(d7);
+
+                let c8 = document.createElement("td");
+                let d8 = document.createElement("input");
+
+                d8.setAttribute('type', 'radio');
+                d8.setAttribute('name', 'Active');
+                c8.appendChild(d8);
+
+                row.appendChild(c1);
+                row.appendChild(c2);
+                row.appendChild(c3);
+                row.appendChild(c4);
+                row.appendChild(c5);
+                row.appendChild(c6);
+                row.appendChild(c7);
+                row.appendChild(c8);
+
+                table.appendChild(row);
             }
         </script>
 
