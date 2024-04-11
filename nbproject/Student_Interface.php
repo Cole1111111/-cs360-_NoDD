@@ -251,7 +251,14 @@
                         new_row = false;
                         cols1switch = true;
                         cols2switch = true;
-                        currentFDDisplay = value;
+                        //
+                        if(currentFDDisplay == ''){         //why all the var =='' checks?
+                            currentFDDisplay = value;       //answer: if you switch to a new row and thier is nothing thier just place new data
+                        }else{                              //if tou switch to a row and stuff is there then it is an old row that we just want
+                            currentFDDisplay += value;      // to append to it. This logic is utalize for other collumns as well.
+                            beforeArrow = false;
+                        }
+                        //
                     } else {
                         if (value == '\u{2192}') {
                             return;
@@ -272,7 +279,13 @@
                             currentCols1Display += ', ' + value;
                         } else if (cols1switch == true){
                             cols1switch = false;
-                            currentCols1Display = value;
+                            //
+                            if(currentCols1Display == ''){
+                                currentCols1Display = value;
+                            }else{
+                                currentCols1Display += value;
+                            }
+                            //
                         }
                       
                     //second cols 
@@ -283,7 +296,11 @@
                             currentCols2Display += ', ' + value;
                         } else if (cols2switch == true){
                             cols2switch = false;
-                            currentCols2Display = value;
+                            if(currentCols2Display == ''){
+                                currentCols2Display = value;
+                            }else{
+                                currentCols2Display += value;
+                            }
                         }
                     }
                 }
@@ -307,67 +324,35 @@
 
             // Function to set the row that will be input into
             function setCurrentRow(row) {
-                if(row == '1'){
-                    new_row = true;
-                    beforeArrow = true;
-                    //const displayFDElement = document.getElementById("fDDisplay" + currentRow);
-                    //currentFDDisplay = displayFDElement.textContent;
-                    currentCols2Display = "";
-                    currentTuplesDisplay = "";
-                    currentObsDisplay = "";
-                    //cols2switch = true;
-                    //alert ("row 1 clcked");
-                    row_1_clicked = 1;
-                    row_2_clicked = 0;
-                    row_3_clicked = 0;
-                }else{
-                    row_1_clicked = 0;
-                }
-                if(row == '2'){
-                    //alert ("row 2 clcked");
-                    new_row = true;
-                    beforeArrow = true;
-                    //const displayFDElement = document.getElementById("fDDisplay" + currentRow);
-                    //currentFDDisplay = displayFDElement.textContent;
-                    currentCols2Display = "";
-                    currentTuplesDisplay = "";
-                    currentObsDisplay = "";
-                    //cols2switch = true;
-                    row_1_clicked = 0;
-                    row_2_clicked = 1;
-                    row_3_clicked = 0;
-                }else{
-
-                    row_2_clicked = 0;
-                }
-                if(row == '3'){
-                    new_row = true;
-                    beforeArrow = true;
-                    //const displayFDElement = document.getElementById("fDDisplay" + currentRow);
-                    //currentFDDisplay = displayFDElement.textContent;
-                    currentCols2Display = "";
-                    currentTuplesDisplay = "";
-                    currentObsDisplay = "";
-                    //alert ("row 3 clcked");
-                    row_1_clicked = 0;
-                    row_2_clicked = 0;
-                    row_3_clicked = 1;
-                }else{
-                    row_3_clicked = 0;
-                }
-                //new as of 4/11/2024
-               // if(){
-                 //   new_row = true;
-                  //  beforeArrow = true;
-                  //  currentCols2Display = "";
-                  //  currentTuplesDisplay = "";
-                  //  currentObsDisplay = "";
-                  //  row_1_clicked = 0;
-                  //  row_2_clicked = 0;
-                  //  row_3_clicked = 0;
-             //   }
+                new_row = true;
+                beforeArrow = true;
                 //
                 currentRow = row;
+
+                //FD display still dose not work right
+                const displayFDElement = document.getElementById("fDDisplay" + currentRow);
+                currentFDDisplay = displayFDElement.textContent;
+
+                const displayCols2Element = document.getElementById("cols2Display" + currentRow);
+                currentCols2Display = displayCols2Element.textContent;
+
+                //there is a weird bleed over between tuples and obs becuse their both display elements
+                //fixed the bleed over but for some reason if you check the tupels feild it dies
+                //it is in confilct somhow with code on line 292
+                //if (currentField == "Tuples") {
+                const displayElement = document.getElementById("tuplesDisplay" + currentRow);
+                currentTuplesDisplay = displayElement.textContent;
+                //}
+
+                if (currentField == "Obs"){
+                const displayElement = document.getElementById("obsDisplay" + currentRow);
+                currentObsDisplay = displayElement.textContent;
+                }
+                //
+                //currentCols2Display = "";
+                //currentTuplesDisplay = ;
+                //currentObsDisplay = "";
+                
             }
 
             // Function to set which field will be updated
