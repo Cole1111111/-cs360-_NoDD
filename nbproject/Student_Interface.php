@@ -272,19 +272,23 @@
 
                     //first cols
                     if (beforeArrow == true && value != '\u{2192}') {
-                        if (currentCols1Display === "" && cols1switch == false) {
-                            
-                            currentCols1Display += value;
-                        } else if (currentCols1Display != "" && cols1switch == false) {
+                        if (currentCols1Display === '' && cols1switch == false) {
+                            alert("currentCols1Display ===  && cols1switch == false");
+                            currentCols1Display += value;   //this never runs
+                        } else if (currentCols1Display != '' && cols1switch == false) {
+                            alert("currentCols1Display !=  && cols1switch == false");
                             currentCols1Display += ', ' + value;
                         } else if (cols1switch == true){
-                            cols1switch = false;
+                           cols1switch = false;
                             //
-                            if(currentCols1Display == ''){
-                                currentCols1Display = value;
-                            }else{
-                                currentCols1Display += value;
-                            }
+                           if(currentCols1Display == ''){
+                            alert("alert");
+                               currentCols1Display = value;
+                               //currentCols1Display = value;
+                         //   }else{
+                                //need a way to track the arrow of each row without being in the row
+                          //      currentCols1Display += ',' + value;
+                           }
                             //
                         }
                       
@@ -299,7 +303,7 @@
                             if(currentCols2Display == ''){
                                 currentCols2Display = value;
                             }else{
-                                currentCols2Display += value;
+                                currentCols2Display += ', ' + value;
                             }
                         }
                     }
@@ -324,6 +328,7 @@
 
             // Function to set the row that will be input into
             function setCurrentRow(row) {
+                //cols1switch = true;
                 new_row = true;
                 beforeArrow = true;
                 //
