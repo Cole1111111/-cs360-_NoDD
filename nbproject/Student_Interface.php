@@ -194,13 +194,6 @@
 
         <!-- Script for button functionality -->
         <script>
-            let new_row = false;
-            let cols1switch = false;
-            let cols2switch = false;
-            let row_1_clicked = 0;
-            let row_2_clicked = 0;
-            let row_3_clicked = 0;
-            
             // Function that makes the different tabs for the input buttons drop down
             function openInput( evt, inputName) {
                 var i, tabcontent, tablinks;
