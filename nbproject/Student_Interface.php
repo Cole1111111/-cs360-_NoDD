@@ -227,84 +227,34 @@
             let beforeArrow = true; // For the Columns setting whether before or after arrow in FD
             var x = <?php echo $x; ?> - 1;
 
-            // Function to set the row that will be input into
-            function setCurrentRow(row) {
-                currentRow = row;
-            }
-
             // Function to append a value to the current display
             function appendToDisplay(value) {
-                /*var currentFDDisplay = "";//document.getElementById("fDDisplay" + currentRow); // The current FD display content
-                var currentCols1Display = ""; // The current Cols1 display content
-                var currentCols2Display = ""; // The current Cols2 display content
-                var currentTuplesDisplay = ""; // The current Tuples display content
-                var currentObsDisplay = ""; // The current Obs display content*/
-
-                //var currentFDDisplay_data = currentFDDisplay.innerHTML;
-
-                //currentFDDisplay.innerHTML = ""
 
                 if (currentField == "FD") {
-                    if (beforeArrow && new_row == false) {
-                        currentFDDisplay += value;
-                    } else if (new_row == true){
-                        new_row = false;
-                        cols1switch = true;
-                        cols2switch = true;
-                        //
-                        if(currentFDDisplay == ''){         //why all the var =='' checks?
-                            currentFDDisplay = value;       //answer: if you switch to a new row and thier is nothing thier just place new data
-                        }else{                              //if tou switch to a row and stuff is there then it is an old row that we just want
-                            currentFDDisplay += value;      // to append to it. This logic is utalize for other collumns as well.
-                            beforeArrow = false;
-                        }
-                        //
-                    } else {
-                        if (value == '\u{2192}') {
-                            return;
-                        } else if (beforeArrow == false && new_row == false) {
-                            currentFDDisplay += value;
-                        }
-                    }
-                    if (value == '\u{2192}') {
+                    if (value == '\u{2192}' && beforeArrow == true) {
                         beforeArrow = false;
+                        currentFDDisplay += value;
+                    } else if (value == '\u{2192}' && beforeArrow == false){
+                        alert("Only one arrow can be in FD display at once");
+                        return;
+                    } else {
+                        currentFDDisplay += value;
                     }
 
                     //first cols
                     if (beforeArrow == true && value != '\u{2192}') {
-                        if (currentCols1Display === '' && cols1switch == false) {
-                            alert("currentCols1Display ===  && cols1switch == false");
-                            currentCols1Display += value;   //this never runs
-                        } else if (currentCols1Display != '' && cols1switch == false) {
-                            alert("currentCols1Display !=  && cols1switch == false");
+                        if (currentCols1Display === '') {
+                            currentCols1Display += value;
+                        } else if (currentCols1Display != '') {
                             currentCols1Display += ', ' + value;
-                        } else if (cols1switch == true){
-                           cols1switch = false;
-                            //
-                           if(currentCols1Display == ''){
-                            alert("alert");
-                               currentCols1Display = value;
-                               //currentCols1Display = value;
-                         //   }else{
-                                //need a way to track the arrow of each row without being in the row
-                          //      currentCols1Display += ',' + value;
-                           }
-                            //
                         }
                       
                     //second cols 
                     } else if (beforeArrow == false && value != '\u{2192}') {
-                        if (currentCols2Display === "" && cols2switch == false) {
+                        if (currentCols2Display === "") {
                             currentCols2Display += value;
-                        } else if (currentCols2Display != "" && cols2switch == false) {
+                        } else if (currentCols2Display != "") {
                             currentCols2Display += ', ' + value;
-                        } else if (cols2switch == true){
-                            cols2switch = false;
-                            if(currentCols2Display == ''){
-                                currentCols2Display = value;
-                            }else{
-                                currentCols2Display += ', ' + value;
-                            }
                         }
                     }
                 }
@@ -329,14 +279,25 @@
             // Function to set the row that will be input into
             function setCurrentRow(row) {
                 //cols1switch = true;
-                new_row = true;
-                beforeArrow = true;
+                /*new_row = true;
+                beforeArrow = true;*/
                 //
                 currentRow = row;
 
                 //FD display still dose not work right
                 const displayFDElement = document.getElementById("fDDisplay" + currentRow);
                 currentFDDisplay = displayFDElement.textContent;
+
+                size = currentFDDisplay.length;
+
+                for (i = 0; i < size; i++) {
+                    if (currentFDDisplay.charAt(i) === '\u{2192}'){
+                        alert(currentFDDisplay.charAt(i));
+                        break;
+                    } else{
+                        beforeArrow = true;
+                    }
+                }
 
                 const displayCols1Element = document.getElementById("cols1Display" + currentRow);
                 currrentCols1Display = displayCols1Element.textContent;
@@ -368,22 +329,19 @@
 
             // Function to update the display with the current content
             function updateDisplay() {
-                if (currentField === "FD") {
-                    const displayFDElement = document.getElementById("fDDisplay" + currentRow);
-                    displayFDElement.textContent = currentFDDisplay;
-                    const displayCols1Element = document.getElementById("cols1Display" + currentRow);
-                    displayCols1Element.textContent = currentCols1Display;
-                    const displayCols2Element = document.getElementById("cols2Display" + currentRow);
-                    displayCols2Element.textContent = currentCols2Display;
-                }
-                if (currentField === "Tuples") {
-                    const displayTuplesElement = document.getElementById("tuplesDisplay" + currentRow);
-                    displayTuplesElement.textContent = currentTuplesDisplay;
-                }
-                if (currentField === "Obs") {
-                    const displayObsElement = document.getElementById("obsDisplay" + currentRow);
-                    displayObsElement.textContent = currentObsDisplay;
-                }
+                const displayFDElement = document.getElementById("fDDisplay" + currentRow);
+                displayFDElement.textContent = currentFDDisplay;
+
+                const displayCols1Element = document.getElementById("cols1Display" + currentRow);
+                displayCols1Element.textContent = currentCols1Display;
+                const displayCols2Element = document.getElementById("cols2Display" + currentRow);
+                displayCols2Element.textContent = currentCols2Display;
+
+                const displayTuplesElement = document.getElementById("tuplesDisplay" + currentRow);
+                displayTuplesElement.textContent = currentTuplesDisplay;
+
+                const displayObsElement = document.getElementById("obsDisplay" + currentRow);
+                displayObsElement.textContent = currentObsDisplay;
             }
 
             // Function to clear the last element from the current display
