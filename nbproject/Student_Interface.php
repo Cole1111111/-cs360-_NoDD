@@ -278,13 +278,8 @@
 
             // Function to set the row that will be input into
             function setCurrentRow(row) {
-                //cols1switch = true;
-                /*new_row = true;
-                beforeArrow = true;*/
-                //
                 currentRow = row;
 
-                //FD display still dose not work right
                 const displayFDElement = document.getElementById("fDDisplay" + currentRow);
                 currentFDDisplay = displayFDElement.textContent;
 
@@ -305,21 +300,11 @@
                 const displayCols2Element = document.getElementById("cols2Display" + currentRow);
                 currentCols2Display = displayCols2Element.textContent;
 
-                //there is a weird bleed over between tuples and obs becuse their both display elements
-                //fixed the bleed over but for some reason if you check the tupels feild it dies
-                //it is in confilct somhow with code on line 292
-                //if (currentField == "Tuples") {
                 const displayTuplesElement = document.getElementById("tuplesDisplay" + currentRow);
                 currentTuplesDisplay = displayTuplesElement.textContent;
-                //}
+
                 const displayObsElement = document.getElementById("obsDisplay" + currentRow);
                 currentObsDisplay = displayObsElement.textContent;
-                
-                //
-                //currentCols2Display = "";
-                //currentTuplesDisplay = ;
-                //currentObsDisplay = "";
-                
             }
 
             // Function to set which field will be updated
