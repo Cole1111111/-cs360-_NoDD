@@ -283,19 +283,12 @@
                 const displayFDElement = document.getElementById("fDDisplay" + currentRow);
                 currentFDDisplay = displayFDElement.textContent;
 
-                size = currentFDDisplay.length;
-
-                for (i = 0; i < size; i++) {
-                    if (currentFDDisplay.charAt(i) === '\u{2192}'){
-                        alert(currentFDDisplay.charAt(i));
-                        break;
-                    } else{
-                        beforeArrow = true;
-                    }
+                if (currentFDDisplay.search('\u{2192}') === -1) {
+                    beforeArrow = true;
                 }
 
                 const displayCols1Element = document.getElementById("cols1Display" + currentRow);
-                currrentCols1Display = displayCols1Element.textContent;
+                currentCols1Display = displayCols1Element.textContent;
 
                 const displayCols2Element = document.getElementById("cols2Display" + currentRow);
                 currentCols2Display = displayCols2Element.textContent;
