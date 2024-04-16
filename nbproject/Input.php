@@ -123,6 +123,7 @@
         </form>
 
         <?php
+            $x = 1;
             if (isset($_POST['varinput'])) {
                 echo "Submission received: <br>";
 
@@ -139,7 +140,7 @@
                     echo '<th>' . $variable . '</th>';
                 }
                 echo '</tr>';
-                echo '<tr id="Row1">';
+                echo '<tr id="Row' . $x . '">';
                 echo '<td id="tuple">t<sub>1</sub></td>';
                 foreach ($variables as $variable) {
                     echo '<td id="' . $variable . '"></td>';
@@ -210,7 +211,7 @@
             let currentField = "FD"; // The field the button interacts with
             let currentRow = 1; // The current row that is being input too
             let beforeArrow = true; // For the Columns setting whether before or after arrow in FD
-            var x = <?php echo $x; ?> - 1;
+            var x = <?php echo $x; ?>;
 
             // Function to append a value to the current display
             function appendToDisplay(value) {
