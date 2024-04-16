@@ -14,15 +14,18 @@
                 border: 1px solid black;
                 border-collapse: collapse;
             }
+
             tr { 
                 border: solid;
                 border-width: 1px 0;
             }
+
             td {
                 padding: 5px;
                 border:1px solid black;
                 text-align: center;
             }
+
             th {
                 padding:10px;
                 border: 1px solid black;

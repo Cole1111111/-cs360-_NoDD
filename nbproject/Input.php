@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>SERVER MESSAGE</title>
-    <style>
-
+    <head>
+        <title>SERVER MESSAGE</title>
+        <style>
             table {
                 border: 1px solid black;
                 border-collapse: collapse;
             }
+
             tr { 
                 border: solid;
                 border-width: 1px 0;
             }
+
             td {
                 padding: 5px;
                 border:1px solid black;
                 text-align: center;
             }
+
             th {
                 padding:10px;
                 border: 1px solid black;
@@ -96,60 +98,49 @@
                 background-color: #e1e1e1;
             }
         </style>
+    </head>
+    <body>
+        <form method="post" target="_self">
+            <div>
+                <!--input for variables -->
+                <label for="varinput">Input Variables:</label>
+                <input type="text" id="varinput" name="varinput" placeholder="ie: a,b,c,d" required />
+            </div>
+            <br>
+            <div>
+                <!--input for dependencies of variables -->
+                <label for="depinput">Input Variables Dependencies:</label>
+                <input type="text" id="depinput" name="depinput" placeholder="ie: {a,b,c}->{d}, {d}->{a}" required />
+            </div>
+            <br>
+            <div>
+                <input type="reset">
+            </div>
+            <br>
+            <div>
+                <input type="submit" value="submit" />
+            </div>
+        </form>
 
+        <?php
+            if (isset($_POST['varinput'])) {
+                echo "Submission received: <br>";
 
+                // Parsing variables and dependencies
+                $variables = explode(',', $_POST['varinput']);
+                $dependencies = explode(',', $_POST['depinput']);
 
-</head>
-
-<body>
-    <form method="post" target="_self">
-        <div>
-            <!--input for variables -->
-            <label for="varinput">Input Variables:</label>
-            <input type="text" id="varinput" name="varinput" placeholder="ie: a,b,c,d" required />
-        </div>
-        <br>
-        <div>
-            <!--input for dependencies of variables -->
-            <label for="depinput">Input Variables Dependencies:</label>
-            <input type="text" id="depinput" name="depinput" placeholder="ie: {a,b,c}->{d}, {d}->{a}" required />
-        </div>
-        <br>
-        <div>
-            <input type="reset">
-        </div>
-        <br>
-        <div>
-            <input type="submit" value="submit" />
-        </div>
-
-    </form>
-
-    <?php
-    if (isset($_POST['varinput'])) {
-        echo "Submission received: <br>";
-
-        // Parsing variables and dependencies
-        $variables = explode(',', $_POST['varinput']);
-        $dependencies = explode(',', $_POST['depinput']);
-
-        // Create a table to display variables and their dependencies
-        echo '<table border="1">';
-        echo '<tr>';
+                // Create a table to display variables and their dependencies
+                echo '<table border="1">';
+                echo '<tr>';
         
-        echo '<th>' . '</th>';
-        foreach ($variables as $variable) {
-            echo '<th>' . $variable . '</th>';
-
-            
-        }
-        echo '</tr>';
-        echo '</table>';
-    }
-    ?>
-</body>
-
-
-
-
+                echo '<th>' . '</th>';
+                foreach ($variables as $variable) {
+                    echo '<th>' . $variable . '</th>';
+                }
+                echo '</tr>';
+                echo '</table>';
+            }
+        ?>
+    </body>
 </html>
