@@ -338,6 +338,9 @@
                 const displayFDElement = document.getElementById("fDDisplay" + currentRow);
                 currentFDDisplay = displayFDElement.textContent;
 
+                const displayCols1Element = document.getElementById("cols1Display" + currentRow);
+                currrentCols1Display = displayCols1Element.textContent;
+
                 const displayCols2Element = document.getElementById("cols2Display" + currentRow);
                 currentCols2Display = displayCols2Element.textContent;
 
@@ -345,14 +348,12 @@
                 //fixed the bleed over but for some reason if you check the tupels feild it dies
                 //it is in confilct somhow with code on line 292
                 //if (currentField == "Tuples") {
-                const displayElement = document.getElementById("tuplesDisplay" + currentRow);
-                currentTuplesDisplay = displayElement.textContent;
+                const displayTuplesElement = document.getElementById("tuplesDisplay" + currentRow);
+                currentTuplesDisplay = displayTuplesElement.textContent;
                 //}
-
-                if (currentField == "Obs"){
-                const displayElement = document.getElementById("obsDisplay" + currentRow);
-                currentObsDisplay = displayElement.textContent;
-                }
+                const displayObsElement = document.getElementById("obsDisplay" + currentRow);
+                currentObsDisplay = displayObsElement.textContent;
+                
                 //
                 //currentCols2Display = "";
                 //currentTuplesDisplay = ;
@@ -376,12 +377,12 @@
                     displayCols2Element.textContent = currentCols2Display;
                 }
                 if (currentField === "Tuples") {
-                    const displayElement = document.getElementById("tuplesDisplay" + currentRow);
-                    displayElement.textContent = currentTuplesDisplay;
+                    const displayTuplesElement = document.getElementById("tuplesDisplay" + currentRow);
+                    displayTuplesElement.textContent = currentTuplesDisplay;
                 }
                 if (currentField === "Obs") {
-                    const displayElement = document.getElementById("obsDisplay" + currentRow);
-                    displayElement.textContent = currentObsDisplay;
+                    const displayObsElement = document.getElementById("obsDisplay" + currentRow);
+                    displayObsElement.textContent = currentObsDisplay;
                 }
             }
 
