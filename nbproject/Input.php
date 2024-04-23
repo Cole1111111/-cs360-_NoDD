@@ -130,6 +130,7 @@
                 // Parsing variables and dependencies
                 $variables = explode(',', $_POST['varinput']);
                 $dependencies = explode(',', $_POST['depinput']);
+                $y = count($variables);
 
                 // Create a table to display variables and their dependencies
                 echo '<table id ="teacherInput" border="1">';
@@ -137,13 +138,15 @@
         
                 echo '<th>' . '</th>';
                 foreach ($variables as $variable) {
+                    echo $variable;
                     echo '<th>' . $variable . '</th>';
                 }
                 echo '</tr>';
                 echo '<tr id="Row' . $x . '">';
-                echo '<td id="tuple">t<sub>1</sub></td>';
+                echo '<td id="tuple">t<sub>' . $x . '</sub></td>';
                 foreach ($variables as $variable) {
-                    echo '<td id="' . $variable . '"></td>';
+                    echo $variable;
+                    echo '<td><div class="display" id="' . $variable . $x . '"></div></td>';
                 }
                 echo '</table>';
             }
@@ -152,16 +155,14 @@
         <!-- Buttons for filling in the Obs field in selected row -->
         <div class="tab">
             <button class="tablinks" onclick="openInput(event, 'Rows')">Row</button>
-            <button class="tablinks" onclick="openInput(event, 'Attributes')">Attributes</button>
-            <button class="tablinks" onclick="openInput(event, 'AttNum')">Attributes Number</button>
+            <button class="tablinks" onclick="openInput(event, 'Attributes')">Attr</button>
+            <button class="tablinks" onclick="openInput(event, 'AttNum')">Attr Num</button>
         </div>
 
         <!-- Buttons for selecting row -->
         <div id="Rows" class="tabcontent">
             
             <button id="rowButton1" onclick="setCurrentRow('1')">Row 1</button>
-            <button id="rowButton2" onclick="setCurrentRow('2')">Row 2</button>
-            <button id="rowButton3" onclick="setCurrentRow('3')">Row 3</button>
             <button id="addRowButton" onclick="add_row()">Add Row</button>
             <button id="delRowButton" onclick="delete_row()">Del Row</button>
         </div>
@@ -169,21 +170,20 @@
         <!-- Buttons for filling in the Attributes field in selected row -->
         <div id="Attributes" class="tabcontent">
             <?php 
-                foreach ($variables as $variable) {
-                    echo '<button onclick="setDisplayVariable(\'Attributes\'), appendToDisplay(' . $variable . ')">' . $variable . '</button>';
+                foreach ($variables as $curvar) {
+                    echo '<button onclick="setAttr  (\'' . $curvar . '\')">' . $curvar . '</button>';
                 }
             ?>
-            <button onclick="setDisplayVariable('Attributes'), clearLastElement()">Del</button>
         </div>
 
         <!-- Buttons for filling in the AttNum field in selected row -->
         <div id="AttNum" class="tabcontent">
-            <button onclick="setDisplayVariable('AttNum'), appendToDisplay('1')">1</button>
-            <button onclick="setDisplayVariable('AttNum'), appendToDisplay('2')">2</button>
-            <button onclick="setDisplayVariable('AttNum'), appendToDisplay('3')">3</button>
-            <button onclick="setDisplayVariable('AttNum'), appendToDisplay('4')">4</button>
-            <button onclick="setDisplayVariable('AttNum'), appendToDisplay('5')">5</button>
-            <button onclick="setDisplayVariable('AttNum'), clearLastElement()">Del</button>
+            <button onclick="appendToDisplay('1')">1</button>
+            <button onclick="appendToDisplay('2')">2</button>
+            <button onclick="appendToDisplay('3')">3</button>
+            <button onclick="appendToDisplay('4')">4</button>
+            <button onclick="appendToDisplay('5')">5</button>
+            <button onclick="clearLastElement()">Del</button>
         </div>
 
         <!-- Script for button functionality -->
@@ -203,60 +203,20 @@
                 evt.currentTarget.className += "active";
             }
             // Initialize variables to store the current display and result display state
-            let currentFDDisplay = "";//document.getElementById("fDDisplay" + currentRow); // The current FD display content
-            let currentCols1Display = ""; // The current Cols1 display content
-            let currentCols2Display = ""; // The current Cols2 display content
-            let currentTuplesDisplay = ""; // The current Tuples display content
-            let currentObsDisplay = ""; // The current Obs display content*/
-            let currentField = "FD"; // The field the button interacts with
+            let currentField = "a"; // The field the button interacts with
+            let currentDisplay = ""; // The display the buttons append to.
             let currentRow = 1; // The current row that is being input too
-            let beforeArrow = true; // For the Columns setting whether before or after arrow in FD
-            var x = <?php echo $x; ?>;
+            var x = <?php echo $x; ?>; // Current row number
+            var y = <?php echo $y; ?>; // amount of attributes
+            var attr = <?php echo json_encode($variables); ?>; // array of all attributes
 
             // Function to append a value to the current display
             function appendToDisplay(value) {
 
-                if (currentField == "FD") {
-                    if (value == '\u{2192}' && beforeArrow == true) {
-                        beforeArrow = false;
-                        currentFDDisplay += value;
-                    } else if (value == '\u{2192}' && beforeArrow == false){
-                        alert("Only one arrow can be in FD display at once");
-                        return;
-                    } else {
-                        currentFDDisplay += value;
-                    }
-
-                    //first cols
-                    if (beforeArrow == true && value != '\u{2192}') {
-                        if (currentCols1Display === '') {
-                            currentCols1Display += value;
-                        } else if (currentCols1Display != '') {
-                            currentCols1Display += ', ' + value;
-                        }
-                      
-                    //second cols 
-                    } else if (beforeArrow == false && value != '\u{2192}') {
-                        if (currentCols2Display === "") {
-                            currentCols2Display += value;
-                        } else if (currentCols2Display != "") {
-                            currentCols2Display += ', ' + value;
-                        }
-                    }
-                }
-
-                //Tuples
-                if (currentField === "Tuples") {
-                    if (currentTuplesDisplay === "") {
-                        currentTuplesDisplay += value;
-                    } else {
-                        currentTuplesDisplay += ', ' + value;
-                    }
-                }
-
-                //Observations
-                if (currentField === "Obs") {
-                    currentObsDisplay += value;
+                if (currentDisplay == ""){
+                    currentDisplay = value;
+                } else {
+                    alert("Only one value in a display at a time");
                 }
 
                 updateDisplay();
@@ -265,146 +225,61 @@
             // Function to set the row that will be input into
             function setCurrentRow(row) {
                 currentRow = row;
-
-                const displayFDElement = document.getElementById("fDDisplay" + currentRow);
-                currentFDDisplay = displayFDElement.textContent;
-
-                if (currentFDDisplay.search('\u{2192}') === -1) {
-                    beforeArrow = true;
-                }
-
-                const displayCols1Element = document.getElementById("cols1Display" + currentRow);
-                currentCols1Display = displayCols1Element.textContent;
-
-                const displayCols2Element = document.getElementById("cols2Display" + currentRow);
-                currentCols2Display = displayCols2Element.textContent;
-
-                const displayTuplesElement = document.getElementById("tuplesDisplay" + currentRow);
-                currentTuplesDisplay = displayTuplesElement.textContent;
-
-                const displayObsElement = document.getElementById("obsDisplay" + currentRow);
-                currentObsDisplay = displayObsElement.textContent;
+                const displayElement = document.getElementById(currentField + currentRow);
+                currentDisplay = displayElement.textContent;
             }
 
             // Function to set which field will be updated
-            function setDisplayVariable(field) {
+            function setAttr(field) {
                 currentField = field;
+                const displayElement = document.getElementById(currentField + currentRow);
+                currentDisplay = displayElement.textContent;
             }
 
             // Function to update the display with the current content
             function updateDisplay() {
-                const displayFDElement = document.getElementById("fDDisplay" + currentRow);
-                displayFDElement.textContent = currentFDDisplay;
-
-                const displayCols1Element = document.getElementById("cols1Display" + currentRow);
-                displayCols1Element.textContent = currentCols1Display;
-                const displayCols2Element = document.getElementById("cols2Display" + currentRow);
-                displayCols2Element.textContent = currentCols2Display;
-
-                const displayTuplesElement = document.getElementById("tuplesDisplay" + currentRow);
-                displayTuplesElement.textContent = currentTuplesDisplay;
-
-                const displayObsElement = document.getElementById("obsDisplay" + currentRow);
-                displayObsElement.textContent = currentObsDisplay;
+                const displayElement = document.getElementById(currentField + currentRow);
+                let subscript = document.createElement("sub");
+                subscript.innerText = currentDisplay;
+                displayElement.textContent = currentField;
+                displayElement.appendChild(subscript);
             }
 
             // Function to clear the last element from the current display
             function clearLastElement() {
-                if (currentField === "FD") {
-                    if (currentFDDisplay.slice(-1) === '\u{2192}') {
-                        beforeArrow = true;
-                    }
-                    if (beforeArrow && currentFDDisplay.slice(-1) != '\u{2192}') {
-                        currentCols1Display = currentCols1Display.slice(0, -3);
-                    } else if (!beforeArrow && currentFDDisplay.slice(-1) != '\u{2192}') {
-                        currentCols2Display = currentCols2Display.slice(0, -3);
-                    }
-                    currentFDDisplay = currentFDDisplay.slice(0, -1);
-                }
-                if (currentField === "Tuples") {
-                    currentTuplesDisplay = currentTuplesDisplay.slice(0, -5);
-                }
-                if (currentField === "Obs") {
-                    currentObsDisplay = currentObsDisplay.slice(0, -1);
-                }
-
-                updateDisplay();
+                const displayElement = document.getElementById(currentField + currentRow);
+                displayElement.textContent = "";
             }
 
             function add_row()
             {
                 x++;
+                
 
                 let table = document.getElementById("teacherInput");
 
                 let row = document.createElement("tr");
                 row.setAttribute('id', 'Row' + x);
 
-                let c1 = document.createElement("td");
-                let d1 = document.createElement("div");
+                let tupNum = document.createElement("td");
+                tupNum.setAttribute('id', 't' + x);
+                tupNum.innerText = "t";
+                let subscript = document.createElement("sub");
+                subscript.innerText = x;
+                tupNum.appendChild(subscript);
+                row.appendChild(tupNum);
 
-                d1.setAttribute('class', 'display');
-                d1.setAttribute('id', 'fDDisplay' + x);
-                c1.appendChild(d1);
+                for (i = 0; i < y; i++) {
+                    let c = document.createElement("td");
+                    let d = document.createElement("div");
 
-                let c2 = document.createElement("td");
-                let d2 = document.createElement("input");
+                    d.setAttribute('class', 'display');
+                    d.setAttribute('id', attr[i] + x);
 
-                d2.setAttribute('type', 'radio');
-                d2.setAttribute('name', x);
-                c2.appendChild(d2);
-
-                let c3 = document.createElement("td");
-                let d3 = document.createElement("input");
-
-                d3.setAttribute('type', 'radio');
-                d3.setAttribute('name', x);
-                c3.appendChild(d3);
-
-                let c4 = document.createElement("td");
-                let d4 = document.createElement("div");
-
-                d4.setAttribute('class', 'display');
-                d4.setAttribute('id', 'tuplesDisplay' + x);
-                c4.appendChild(d4);
-
-                let c5 = document.createElement("td");
-                let d5 = document.createElement("div");
-
-                d5.setAttribute('class', 'display');
-                d5.setAttribute('id', 'cols1Display' + x);
-                c5.appendChild(d5);
-
-                let c6 = document.createElement("td");
-                let d6 = document.createElement("div");
-
-                d6.setAttribute('class', 'display');
-                d6.setAttribute('id', 'cols2Display' + x);
-                c6.appendChild(d6);
-
-                let c7 = document.createElement("td");
-                let d7 = document.createElement("div");
-
-                d7.setAttribute('class', 'display');
-                d7.setAttribute('id', 'obsDisplay' + x);
-                c7.appendChild(d7);
-
-                let c8 = document.createElement("td");
-                let d8 = document.createElement("input");
-
-                d8.setAttribute('type', 'radio');
-                d8.setAttribute('name', 'Active');
-                c8.appendChild(d8);
-
-                row.appendChild(c1);
-                row.appendChild(c2);
-                row.appendChild(c3);
-                row.appendChild(c4);
-                row.appendChild(c5);
-                row.appendChild(c6);
-                row.appendChild(c7);
-                row.appendChild(c8);
-
+                    c.appendChild(d);
+                    row.appendChild(c);
+                }
+                
                 table.appendChild(row);
 
 
@@ -436,7 +311,7 @@
 
             function delete_row()
             {
-                let table = document.getElementById("studentInput");
+                let table = document.getElementById("teacherInput");
                 if(x > 1){
                     table.deleteRow(-1);
 
