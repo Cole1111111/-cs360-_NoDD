@@ -104,13 +104,13 @@
             <div>
                 <!--input for variables -->
                 <label for="varinput">Input Variables:</label>
-                <input type="text" id="varinput" name="varinput" placeholder="ie: a,b,c,d" required />
+                <input type="text" id="varinput" name="varinput" placeholder="ie: a,b,c,d" required>
             </div>
             <br>
             <div>
                 <!--input for dependencies of variables -->
                 <label for="depinput">Input Variables Dependencies:</label>
-                <input type="text" id="depinput" name="depinput" placeholder="ie: {a,b,c}->{d}, {d}->{a}" required />
+                <input type="text" id="depinput" name="depinput" placeholder="ie: {a,b,c}->{d}, {d}->{a}" required>
             </div>
             <br>
             <div>
@@ -118,7 +118,7 @@
             </div>
             <br>
             <div>
-                <input type="submit" value="Create Table" />
+                <input type="submit" value="Create Table">
             </div>
 
             
@@ -190,7 +190,7 @@
         
         <!--submit to database-->
         <div>
-            <input type="submit" value="submit" onclick="create_FDtable()">
+            <input type="submit" value="submit" onclick="createFDTable()">
             <?php
                 /*$con = mysqli_connect("localhost", "root", "", "nodd_tale");
                 
@@ -203,6 +203,10 @@
                 $query= "INSERT INTO `questions`(`ass id`, `quest num`, `attributes`, `fd`, `fd table`, `answer`) VALUES ('1','1','$attributes','$fd','$FDtable','')";
                 */
             ?>
+        </div>
+
+        <div id="printer">
+
         </div>
 
         <!-- Script for button functionality -->
@@ -273,7 +277,6 @@
             function add_row()
             {
                 x++;
-                
 
                 let table = document.getElementById("teacherInput");
 
@@ -343,20 +346,22 @@
                 }
             }
 
-            function create_FDtable(){
-                let i = 0;
-                let j = 0;
+            function createFDTable(){
                 let count = 0;
                 let arr = [];
-                var display;
-                var element;
-                for(i; i < x; i++){
-                    for(j; j < y; j++){
-                        display = document.getElementById(attr[y] + i); 
-                        element = display.textContent;
+                for(i = 1; i < x; i++){
+                    for(j = 0; j < y; j++){
+                        let display = document.getElementById(attr[j] + i);
+                        if (display) {
+                            let element = display.textContent;
+                        } else {
+                            alert("display doesnt exist?")
+                        }
                         arr[count] = element.slice(-1) + ",";
                         count++;
-                        document.write(arr[j]);
+                        const para = document.createElement("p");
+                        para.innerText = element;
+                        document.getElementById("printer").appendChild(para);
                     }
                     arr[count - 1] = arr[count - 1] + ";";
                 }
