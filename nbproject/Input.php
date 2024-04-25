@@ -118,8 +118,10 @@
             </div>
             <br>
             <div>
-                <input type="submit" value="submit" />
+                <input type="submit" value="Create Table" />
             </div>
+
+            
         </form>
 
         <?php
@@ -151,7 +153,7 @@
                 echo '</table>';
             }
         ?>
-
+            
         <!-- Buttons for filling in the Obs field in selected row -->
         <div class="tab">
             <button class="tablinks" onclick="openInput(event, 'Rows')">Row</button>
@@ -171,7 +173,7 @@
         <div id="Attributes" class="tabcontent">
             <?php 
                 foreach ($variables as $curvar) {
-                    echo '<button onclick="setAttr  (\'' . $curvar . '\')">' . $curvar . '</button>';
+                    echo '<button onclick="setAttr(\'' . $curvar . '\')">' . $curvar . '</button>';
                 }
             ?>
         </div>
@@ -184,6 +186,23 @@
             <button onclick="appendToDisplay('4')">4</button>
             <button onclick="appendToDisplay('5')">5</button>
             <button onclick="clearLastElement()">Del</button>
+        </div>
+        
+        <!--submit to database-->
+        <div>
+            <input type="submit" value="submit" onclick="create_FDtable()">
+            <?php
+                /*$con = mysqli_connect("localhost", "root", "", "nodd_tale");
+                
+                //check connection
+                if(mysqli_connect_errno()){
+                    echo "Failed to connect to MySQL: " . mysqli_connect_error();
+                }
+                $attributes = implode($variables);
+                $fd = implode($dependencies);
+                $query= "INSERT INTO `questions`(`ass id`, `quest num`, `attributes`, `fd`, `fd table`, `answer`) VALUES ('1','1','$attributes','$fd','$FDtable','')";
+                */
+            ?>
         </div>
 
         <!-- Script for button functionality -->
@@ -203,12 +222,12 @@
                 evt.currentTarget.className += "active";
             }
             // Initialize variables to store the current display and result display state
-            let currentField = "a"; // The field the button interacts with
             let currentDisplay = ""; // The display the buttons append to.
             let currentRow = 1; // The current row that is being input too
             var x = <?php echo $x; ?>; // Current row number
             var y = <?php echo $y; ?>; // amount of attributes
             var attr = <?php echo json_encode($variables); ?>; // array of all attributes
+            let currentField = attr[0]; // The field the button interacts with
 
             // Function to append a value to the current display
             function appendToDisplay(value) {
@@ -321,6 +340,25 @@
                     x--;
                 }else{
                    alert("Must have at least one row.");
+                }
+            }
+
+            function create_FDtable(){
+                let i = 0;
+                let j = 0;
+                let count = 0;
+                let arr = [];
+                var display;
+                var element;
+                for(i; i < x; i++){
+                    for(j; j < y; j++){
+                        display = document.getElementById(attr[y] + i); 
+                        element = display.textContent;
+                        arr[count] = element.slice(-1) + ",";
+                        count++;
+                        document.write(arr[j]);
+                    }
+                    arr[count - 1] = arr[count - 1] + ";";
                 }
             }
         </script>
