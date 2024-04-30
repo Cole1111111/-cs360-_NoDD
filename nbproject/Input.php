@@ -363,7 +363,7 @@
                         para.innerText = element;
                         document.getElementById("printer").appendChild(para);
                     }
-                    arr[count - 1] = arr[count - 1] + ";";
+                    arr[count - 1] = arr[count - 1].slice(0,-1) + ";";
                 }
             }
         </script>
