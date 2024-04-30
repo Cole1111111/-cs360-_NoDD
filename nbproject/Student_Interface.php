@@ -114,9 +114,9 @@
                     <th>FD</th>
                     <th>True</th>
                     <th>False</th>
-                    <th>Tuples</th>
-                    <th>Cols</th>
-                    <th>Cols</th>
+                    <th style="background-color: #7bf542;">Tuples</th>
+                    <th style="background-color: #42bcf5;">Cols</th>
+                    <th style="background-color: #F5F542;">Cols</th>
                     <th>Obs</th>
                     <th>Active</th>
                 </tr>
@@ -132,7 +132,7 @@
                                 echo '<td><div class="display" id=' . "cols1Display$x" . '></div></td>'; //<!--implies columns-->
                                 echo '<td><div class="display" id=' . "cols2Display$x" . '></div></td>'; //<!--implied columns-->
                                 echo '<td><div class="display" id=' . "obsDisplay$x" . '></div></td>'; //<!--student observations input-->
-                                echo '<td><input type="radio" name="Active"></td>'; //<!--active checkbox-->
+                                echo '<td><input type="radio" name="Active" id=' . "$x" . ' onclick="UpdateHighlight(this.id)"></td>'; //<!--active checkbox-->
                             echo '</tr>';
                 
                         $x++;
@@ -471,12 +471,12 @@
                     while($x<=$num_tuples) {
                 ?>
                             <tr>
-                                <td>t<sub><?php echo "$x";?></sub></td>
-                                <td>a<sub><?php echo "$x";?></sub></td>
-                                <td>b<sub><?php echo "$x";?></sub></td>
-                                <td>c<sub><?php echo "$x";?></sub></td>
-                                <td>d<sub><?php echo "$x";?></sub></td>
-                                <td>e<sub><?php echo "$x";?></sub></td>
+                                <td id=<?php echo"t$x" ?>>t<sub><?php echo "$x";?></sub></td>
+                                <td id=<?php echo"A$x" ?>>a<sub><?php echo "$x";?></sub></td>
+                                <td id=<?php echo"B$x" ?>>b<sub><?php echo "$x";?></sub></td>
+                                <td id=<?php echo"C$x" ?>>c<sub><?php echo "$x";?></sub></td>
+                                <td id=<?php echo"D$x" ?>>d<sub><?php echo "$x";?></sub></td>
+                                <td id=<?php echo"E$x" ?>>e<sub><?php echo "$x";?></sub></td>
                             </tr>
                 <?php
                         $x++;
@@ -484,5 +484,25 @@
                 ?>
             </table>
         </div>
+
+        <script>
+            function UpdateHighlight(activeRow){
+                const displayTuples = document.getElementById("tuplesDisplay" + activeRow);
+                currentTuplesDisplay = displayTuples.textContent;
+                
+                const displayCols1 = document.getElementById("cols1Display" + activeRow);
+                currentCols1Display = displayCols1.textContent;
+
+                const displayCols2 = document.getElementById("cols2Display" + activeRow);
+                currentCols2Display = displayCols2.textContent;
+
+                var num_tuples = "<?php echo $num_tuples; ?>";
+                for(let i = 1; i <= num_tuples; i++){
+                    if(currentTuplesDisplay.search(i) != -1){
+                        document.getElementById("t" + i).style.backgroundColor="#7bf542";
+                    }
+                }
+            }
+        </script>
     </body>
 </html>
