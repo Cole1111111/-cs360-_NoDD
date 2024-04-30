@@ -192,17 +192,19 @@
         <div>
             <input type="submit" value="submit" onclick="createFDTable()">
             <?php
-                $con = mysqli_connect("localhost", "root", "", "nodd_tale");
+                if (isset($_POST['arr'])) {
+                    $con = mysqli_connect("localhost", "root", "", "nodd_tale");
                 
-                //check connection
-                if(mysqli_connect_errno()){
-                    echo "Failed to connect to MySQL: " . mysqli_connect_error();
+                    //check connection
+                    if(mysqli_connect_errno()){
+                        echo "Failed to connect to MySQL: " . mysqli_connect_error();
+                    }
+                    $attributes = implode($variables);
+                    $fd = implode($dependencies);
+                    $fDTable=$_POST['arr'];
+                    $query= "INSERT INTO `questions`(`ass id`, `quest num`, `attributes`, `fd`, `fd table`, `answer`) VALUES ('1', '' ,'$attributes','$fd','$fDTable','')";
+                    echo $fDTable;
                 }
-                $attributes = implode($variables);
-                $fd = implode($dependencies);
-                $fDTable=$_POST['arr'];
-                $query= "INSERT INTO `questions`(`ass id`, `quest num`, `attributes`, `fd`, `fd table`, `answer`) VALUES ('1', '' ,'$attributes','$fd','$fDTable','')";
-                echo $fDTable;
             ?>
         </div>
 
