@@ -364,7 +364,17 @@
                     arr[count - 1] = arr[count - 1].slice(0,-1) + ";";
                 }
                 arr.join();
-                $.post({arr: arr});
+                form = document.createElement('form');
+                form.setAttribute('method', 'POST');
+                form.setAttribute('target', '_self');
+                myvar = document.createElement('input');
+                myvar.setAttribute('type', 'text');
+                myvar.setAttribute('id', 'arr');
+                myvar.setAttribute('name', 'arr');
+                myvar.setAttribute('value', arr);
+                form.appendChild(myvar);
+                document.body.appendChild(form);
+                form.submit();
             }
         </script>
     </body>
