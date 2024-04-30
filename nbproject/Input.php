@@ -200,7 +200,7 @@
                 }
                 $attributes = implode($variables);
                 $fd = implode($dependencies);
-                $fDTable=json_decode($_POST['jsondata']);
+                $fDTable=$_POST['arr'];
                 $query= "INSERT INTO `questions`(`ass id`, `quest num`, `attributes`, `fd`, `fd table`, `answer`) VALUES ('1', '' ,'$attributes','$fd','$fDTable','')";
                 echo $fDTable;
             ?>
@@ -363,7 +363,8 @@
                     }
                     arr[count - 1] = arr[count - 1].slice(0,-1) + ";";
                 }
-                JSON.stringify(arr);
+                arr.join();
+                $.post({arr: arr});
             }
         </script>
     </body>
