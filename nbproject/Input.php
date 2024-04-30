@@ -192,7 +192,7 @@
         <div>
             <input type="submit" value="submit" onclick="createFDTable()">
             <?php
-                /*$con = mysqli_connect("localhost", "root", "", "nodd_tale");
+                $con = mysqli_connect("localhost", "root", "", "nodd_tale");
                 
                 //check connection
                 if(mysqli_connect_errno()){
@@ -200,8 +200,9 @@
                 }
                 $attributes = implode($variables);
                 $fd = implode($dependencies);
-                $query= "INSERT INTO `questions`(`ass id`, `quest num`, `attributes`, `fd`, `fd table`, `answer`) VALUES ('1','1','$attributes','$fd','$FDtable','')";
-                */
+                $fDTable=json_decode($_POST['jsondata']);
+                $query= "INSERT INTO `questions`(`ass id`, `quest num`, `attributes`, `fd`, `fd table`, `answer`) VALUES ('1', '' ,'$attributes','$fd','$fDTable','')";
+                echo $fDTable;
             ?>
         </div>
 
@@ -359,12 +360,10 @@
                         }
                         arr[count] = element.slice(-1) + ",";
                         count++;
-                        const para = document.createElement("p");
-                        para.innerText = element;
-                        document.getElementById("printer").appendChild(para);
                     }
                     arr[count - 1] = arr[count - 1].slice(0,-1) + ";";
                 }
+                JSON.stringify(arr);
             }
         </script>
     </body>
