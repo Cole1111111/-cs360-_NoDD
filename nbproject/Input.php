@@ -192,16 +192,19 @@
         <div>
             <input type="submit" value="submit" onclick="createFDTable()">
             <?php
-                /*$con = mysqli_connect("localhost", "root", "", "nodd_tale");
+                if (isset($_POST['arr'])) {
+                    $con = mysqli_connect("localhost", "root", "", "nodd_tale");
                 
-                //check connection
-                if(mysqli_connect_errno()){
-                    echo "Failed to connect to MySQL: " . mysqli_connect_error();
+                    //check connection
+                    if(mysqli_connect_errno()){
+                        echo "Failed to connect to MySQL: " . mysqli_connect_error();
+                    }
+                    $attributes = implode($variables);
+                    $fd = implode($dependencies);
+                    $fDTable=$_POST['arr'];
+                    $query= "INSERT INTO `questions`(`ass id`, `quest num`, `attributes`, `fd`, `fd table`, `answer`) VALUES ('1', '' ,'$attributes','$fd','$fDTable','')";
+                    echo $fDTable;
                 }
-                $attributes = implode($variables);
-                $fd = implode($dependencies);
-                $query= "INSERT INTO `questions`(`ass id`, `quest num`, `attributes`, `fd`, `fd table`, `answer`) VALUES ('1','1','$attributes','$fd','$FDtable','')";
-                */
             ?>
         </div>
 
@@ -359,12 +362,21 @@
                         }
                         arr[count] = element.slice(-1) + ",";
                         count++;
-                        const para = document.createElement("p");
-                        para.innerText = element;
-                        document.getElementById("printer").appendChild(para);
                     }
                     arr[count - 1] = arr[count - 1].slice(0,-1) + ";";
                 }
+                arr.join();
+                form = document.createElement('form');
+                form.setAttribute('method', 'POST');
+                form.setAttribute('target', '_self');
+                myvar = document.createElement('input');
+                myvar.setAttribute('type', 'text');
+                myvar.setAttribute('id', 'arr');
+                myvar.setAttribute('name', 'arr');
+                myvar.setAttribute('value', arr);
+                form.appendChild(myvar);
+                document.body.appendChild(form);
+                form.submit();
             }
         </script>
     </body>
