@@ -106,6 +106,7 @@
         <?php
             $num_relations = 3;
             $num_tuples = 4;
+            $num_variables = 5;
             $x = 1;
         ?>
         <div style="padding:10px">
@@ -460,11 +461,11 @@
             <table>
                 <tr>
                     <th style=""></th>
-                    <th>A</th>
-                    <th>B</th>
-                    <th>C</th>
-                    <th>D</th>
-                    <th>E</th>
+                    <th id="HeaderA">A</th>
+                    <th id="HeaderB">B</th>
+                    <th id="HeaderC">C</th>
+                    <th id="HeaderD">D</th>
+                    <th id="HeaderE">E</th>
                 </tr>
                 <?php
                     $x = 1;
@@ -487,19 +488,54 @@
 
         <script>
             function UpdateHighlight(activeRow){
-                const displayTuples = document.getElementById("tuplesDisplay" + activeRow);
+                const displayTuples = document.getElementById("tuplesDisplay" + activeRow); //get current tuples string
                 currentTuplesDisplay = displayTuples.textContent;
                 
-                const displayCols1 = document.getElementById("cols1Display" + activeRow);
+                const displayCols1 = document.getElementById("cols1Display" + activeRow); //get current cols 1 string
                 currentCols1Display = displayCols1.textContent;
 
-                const displayCols2 = document.getElementById("cols2Display" + activeRow);
+                const displayCols2 = document.getElementById("cols2Display" + activeRow); //get current cols 2 display
                 currentCols2Display = displayCols2.textContent;
 
+                var num_variables = "<?php echo $num_variables?>"                
                 var num_tuples = "<?php echo $num_tuples; ?>";
+
+                for(let i = 0; i < num_variables; i++){ //reset all background colors to white before setting them to something else
+                    document.getElementById("Header" + String.fromCharCode(65 + i)).style.backgroundColor="#ffffff";
+                    for(let j = 1; j <= num_tuples; j++){
+                        document.getElementById(String.fromCharCode(65 + i) + j).style.backgroundColor="#ffffff";
+                    }
+                }
+
+                for(let i = 0; i < num_variables; i++){
+                    if(currentCols1Display.search(String.fromCharCode(65 + i)) != -1){ //starting at "A" (char code 65) check which variables are in the cols 1 and need to be highlighted
+                        document.getElementById("Header" + String.fromCharCode(65 + i)).style.backgroundColor="#42bcf5";
+                    }
+
+                    if(currentCols2Display.search(String.fromCharCode(65 + i)) != -1){ //starting at "A" (char code 65) check which variables are in the cols 2 and need to be highlighted
+                        document.getElementById("Header" + String.fromCharCode(65 + i)).style.backgroundColor="#F5F542";
+                    }
+
+                    if((currentCols1Display.search(String.fromCharCode(65 + i)) != -1) && (currentCols2Display.search(String.fromCharCode(65 + i)) != -1)){
+                        document.getElementById("Header" + String.fromCharCode(65 + i)).style.backgroundColor="#eba134";
+                    }
+                }
+
                 for(let i = 1; i <= num_tuples; i++){
-                    if(currentTuplesDisplay.search(i) != -1){
-                        document.getElementById("t" + i).style.backgroundColor="#7bf542";
+                    if(currentTuplesDisplay.search(i) != -1){ 
+                        for(let j = 0; j < num_variables; j++){
+                            if(currentCols1Display.search(String.fromCharCode(65 + j)) != -1){ //starting at "A" (char code 65) check which variables are in the cols 1 and need to be highlighted
+                                document.getElementById(String.fromCharCode(65 + j) + i).style.backgroundColor="#42bcf5";
+                            }
+
+                            if(currentCols2Display.search(String.fromCharCode(65 + j)) != -1){ //starting at "A" (char code 65) check which variables are in the cols 2 and need to be highlighted
+                                document.getElementById(String.fromCharCode(65 + j) + i).style.backgroundColor="#F5F542";
+                            }
+
+                            if((currentCols1Display.search(String.fromCharCode(65 + j)) != -1) && (currentCols2Display.search(String.fromCharCode(65 + j)) != -1)){
+                                document.getElementById(String.fromCharCode(65 + j) + i).style.backgroundColor="#eba134";
+                            }
+                }
                     }
                 }
             }
