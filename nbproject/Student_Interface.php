@@ -219,6 +219,7 @@
             let currentRow = 1; // The current row that is being input too
             let beforeArrow = true; // For the Columns setting whether before or after arrow in FD
             var x = <?php echo $x; ?> - 1;
+            let currentActiveRow = 0; 
 
             // Function to append a value to the current display
             function appendToDisplay(value) {
@@ -313,6 +314,10 @@
 
                 const displayObsElement = document.getElementById("obsDisplay" + currentRow);
                 displayObsElement.textContent = currentObsDisplay;
+
+                if(currentRow == currentActiveRow){
+                    UpdateHighlight(currentRow);
+                }
             }
 
             // Function to clear the last element from the current display
@@ -401,6 +406,8 @@
 
                 d8.setAttribute('type', 'radio');
                 d8.setAttribute('name', 'Active');
+                d8.setAttribute('id', x);
+                d8.setAttribute('onclick', 'UpdateHighlight(this.id)');
                 c8.appendChild(d8);
 
                 row.appendChild(c1);
@@ -445,6 +452,10 @@
             {
                 let table = document.getElementById("studentInput");
                 if(x > 1){
+                    if(currentActiveRow == x){
+                        ClearHighlight();
+                    }
+
                     table.deleteRow(-1);
 
                     let lastRowButton = document.getElementById("rowButton" + x);
@@ -488,6 +499,8 @@
 
         <script>
             function UpdateHighlight(activeRow){
+                currentActiveRow = activeRow;
+
                 const displayTuples = document.getElementById("tuplesDisplay" + activeRow); //get current tuples string
                 currentTuplesDisplay = displayTuples.textContent;
                 
@@ -527,7 +540,6 @@
                             if(currentCols1Display.search(String.fromCharCode(65 + j)) != -1){ //starting at "A" (char code 65) check which variables are in the cols 1 and need to be highlighted
                                 document.getElementById(String.fromCharCode(65 + j) + i).style.backgroundColor="#42bcf5";
                             }
-
                             if(currentCols2Display.search(String.fromCharCode(65 + j)) != -1){ //starting at "A" (char code 65) check which variables are in the cols 2 and need to be highlighted
                                 document.getElementById(String.fromCharCode(65 + j) + i).style.backgroundColor="#F5F542";
                             }
@@ -535,7 +547,19 @@
                             if((currentCols1Display.search(String.fromCharCode(65 + j)) != -1) && (currentCols2Display.search(String.fromCharCode(65 + j)) != -1)){
                                 document.getElementById(String.fromCharCode(65 + j) + i).style.backgroundColor="#eba134";
                             }
+                        }
+                    }
                 }
+            }
+
+            function ClearHighlight(){
+                var num_variables = "<?php echo $num_variables?>"                
+                var num_tuples = "<?php echo $num_tuples; ?>";
+
+                for(let i = 0; i < num_variables; i++){ //set all background colors to white
+                    document.getElementById("Header" + String.fromCharCode(65 + i)).style.backgroundColor="#ffffff";
+                    for(let j = 1; j <= num_tuples; j++){
+                        document.getElementById(String.fromCharCode(65 + i) + j).style.backgroundColor="#ffffff";
                     }
                 }
             }
