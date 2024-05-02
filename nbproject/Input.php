@@ -126,13 +126,34 @@
 
         <?php
             $x = 1;
+            // An attempt at sending the information to the database, but it doesn't work and as such switched to prior usage.
             if (isset($_POST['varinput'])) {
-                echo "Submission received: <br>";
-
+                /*$con = mysqli_connect("localhost", "root", "", "nodd_tale");
+                
+                //check connection
+                if(mysqli_connect_errno()){
+                    echo "Failed to connect to MySQL: " . mysqli_connect_error();
+                }*/
                 // Parsing variables and dependencies
                 $variables = explode(',', $_POST['varinput']);
                 $dependencies = explode(',', $_POST['depinput']);
                 $y = count($variables);
+                /*$variables = implode($variables);
+                $dependencies = implode($dependencies);
+                $query    = "INSERT into `questions` (ass id, quest num, stu id, attributes, fd, fd table, answer)
+                             VALUES ('1', '1', '1', '$variables', '$dependencies', '', '')";
+                $result   = mysqli_query($con, $query);
+                if ($result) {
+                    echo "<div class='form'>
+                          <h3>You submitted attributes and dependencies successfully.</h3><br/>
+                          </div>";
+                } else {
+                    echo "<div class='form'>
+                          <h3>Required fields are missing.</h3><br/>
+                          </div>";
+                }*/
+
+                //$variables = explode($variables);
 
                 // Create a table to display variables and their dependencies
                 echo '<table id ="teacherInput" border="1">';
@@ -140,17 +161,18 @@
         
                 echo '<th>' . '</th>';
                 foreach ($variables as $variable) {
-                    echo $variable;
+                    //echo $variable;
                     echo '<th>' . $variable . '</th>';
                 }
                 echo '</tr>';
                 echo '<tr id="Row' . $x . '">';
                 echo '<td id="tuple">t<sub>' . $x . '</sub></td>';
                 foreach ($variables as $variable) {
-                    echo $variable;
+                    //echo $variable;
                     echo '<td><div class="display" id="' . $variable . $x . '"></div></td>';
                 }
                 echo '</table>';
+                //$conn->close();
             }
         ?>
             
@@ -190,8 +212,8 @@
         
         <!--submit to database-->
         <div>
-            <input type="submit" value="submit" onclick="createFDTable()">
-            <?php
+            <!--- <input type="submit" value="submit" onclick="createFDTable()"> --> 
+            <?php /*
                 if (isset($_POST['arr'])) {
                     $con = mysqli_connect("localhost", "root", "", "nodd_tale");
                 
@@ -199,17 +221,22 @@
                     if(mysqli_connect_errno()){
                         echo "Failed to connect to MySQL: " . mysqli_connect_error();
                     }
-                    $attributes = implode($variables);
-                    $fd = implode($dependencies);
                     $fDTable=$_POST['arr'];
-                    $query= "INSERT INTO `questions`(`ass id`, `quest num`, `attributes`, `fd`, `fd table`, `answer`) VALUES ('1', '' ,'$attributes','$fd','$fDTable','')";
-                    echo $fDTable;
-                }
+                    $query= "INSERT into `questions` (ass id, quest num, stu id, fd table)
+                             VALUES ('1', '1', '1', '$fDTable')";
+                    $result   = mysqli_query($con, $query);
+                    if ($result) {
+                        echo "<div class='form'>
+                              <h3>You submitted fd table successfully.</h3><br/>
+                              </div>";
+                    } else {
+                        echo "<div class='form'>
+                              <h3>Required fields are missing.</h3><br/>
+                              </div>";
+                    }
+                    $conn->close();
+                }*/
             ?>
-        </div>
-
-        <div id="printer">
-
         </div>
 
         <!-- Script for button functionality -->
@@ -231,9 +258,23 @@
             // Initialize variables to store the current display and result display state
             let currentDisplay = ""; // The display the buttons append to.
             let currentRow = 1; // The current row that is being input too
-            var x = <?php echo $x; ?>; // Current row number
-            var y = <?php echo $y; ?>; // amount of attributes
-            var attr = <?php echo json_encode($variables); ?>; // array of all attributes
+            var x = 1; // Current row number
+            var attr = <?php echo json_encode($variables); 
+                        /*$con = mysqli_connect("localhost", "root", "", "nodd_tale");
+                        if ($conn->connect_error) {
+                            die("Connection failed: " . $conn->connect_error);
+                        }
+                        $sql = "SELECT attributes FROM questions";
+                        $result = $conn->query($sql);
+
+                        if ($result->num_rows > 0) {
+                            $attributes = $result->fetch_assoc()['attributes'];
+                            echo $attributes;
+                        } else {
+                            echo "0 results";
+                        }
+                        $conn->close(); */?>; // array of attributes
+            var y = attr.length; // amount of attributes
             let currentField = attr[0]; // The field the button interacts with
 
             // Function to append a value to the current display
@@ -277,6 +318,7 @@
                 displayElement.textContent = "";
             }
 
+            // Adds a row to the table.
             function add_row()
             {
                 x++;
@@ -334,6 +376,7 @@
                 rowButtons.appendChild(delRow);
             }
 
+            // delete rows
             function delete_row()
             {
                 let table = document.getElementById("teacherInput");
@@ -349,6 +392,8 @@
                 }
             }
 
+            // is supposed to create a string that would represent the input from teachers in the fd table.
+            // couldn't get the sql to work so currently does nothing.
             function createFDTable(){
                 let count = 0;
                 let arr = [];
